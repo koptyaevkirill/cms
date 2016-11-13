@@ -1,3 +1,4 @@
 <?php
-include_once 'urlManager.php';
+include_once 'controllers/UrlManagerController.php';
+require_once 'core/Router.php';
  

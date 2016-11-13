@@ -1,7 +1,9 @@
 <?php
-class urlManager {
+class UrlManager {
     static function parseURL() {
-        return explode('/', parse_url($_SERVER['REQUEST_URI'])['path']);
+        $url = explode('/', parse_url($_SERVER['REQUEST_URI'])['path']);
+        array_shift($url);
+        return $url;
     }
     
 }
