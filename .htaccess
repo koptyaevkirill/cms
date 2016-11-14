@@ -17,4 +17,4 @@ RewriteRule ^(.*)$ - [E=BASE:%1]
 RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
 php_value display_errors 1
 php_value display_startup_errors 1
-php_value error_reporting E_ALL
+php_value error_reporting 2047

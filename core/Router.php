@@ -1,5 +1,8 @@
 <?php
-class Router {
-
+class Router
+{
+    static function start()
+    {
+    }
 }
 
