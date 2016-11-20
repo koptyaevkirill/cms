@@ -1,17 +1,18 @@
 <?php
-class IndexController {
-    
-    
+class IndexController extends Controller {
+     
     /**
      * Home page
      */
     public function indexAction() {
-        echo 'Welcome!';
+        $this->view->generate('web', 'index.php', 'index.php');
     }
     /**
      * Login page
      */
-    public function loginAction() {}
+    public function loginAction() {
+        $this->view->generate('web', 'login.php', 'index.php');
+    }
     /**
      * Logout user
      */
