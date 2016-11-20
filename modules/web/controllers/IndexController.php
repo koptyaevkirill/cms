@@ -5,7 +5,9 @@ class IndexController {
     /**
      * Home page
      */
-    public function indexAction() {}
+    public function indexAction() {
+        echo 'Welcome!';
+    }
     /**
      * Login page
      */
