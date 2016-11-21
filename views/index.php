@@ -24,8 +24,12 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/registration">Sign up</a></li>
-                    <li><a href="/login">Sign in</a></li>
+                    <?php if(Session::get('loggedIn') == true):?>
+                        <li><a href="/logout">Logout</a></li>
+                    <?php else: ?>
+                        <li><a href="/registration">Registration</a></li>
+                        <li><a href="/login">Login</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>

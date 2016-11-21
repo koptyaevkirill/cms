@@ -9,7 +9,7 @@ class Router {
         header("Status: 404 Not Found");
         header('Location:'.$host.'404');
     }
-    public function addRoute($router, $mca) {
+    public function addRoute($mca) {
         $controller_name = ucfirst($mca['controller']).'Controller';
         $controller_file = $controller_name.'.php';
         $action = ucfirst($mca['action']).'Action';
