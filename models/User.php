@@ -15,6 +15,7 @@ class User {
      * Password hash
      */
     protected $password;
+    protected $sessionPassword;
     protected $repeatPassword;
     
     /**
@@ -56,7 +57,7 @@ class User {
         if (null == $password) {
             $this->password = null;
         } else {
-            $this->password = md5($password);
+            $this->password = $password;
         }
         return $this;
     }
@@ -65,6 +66,17 @@ class User {
      */
     public function getPassword() {
         return $this->password;
+    }
+    /**
+     * Set session password
+     */
+    public function setSessionPassword($sessionPassword) {
+        if (null == $sessionPassword) {
+            $this->sessionPassword = null;
+        } else {
+            $this->sessionPassword  = md5($sessionPassword);
+        }
+        return $this;
     }
     /**
      * Set repeatPassword
@@ -95,6 +107,12 @@ class User {
             'password' => $this->getPassword(),
             //'passwordRepeat' => $this->getRepeatPassword(),
         ];
+    }
+    public function isValid() {
+        if($this->password === $this->sessionPassword) {
+            return true;
+        }
+        return false;
     }
     
 }

@@ -238,3 +238,7 @@ input[type="button"]:hover, input[type="submit"]:hover, button:hover, .button:ho
     text-align: center;
     font-size: 100px !important;
 }
+p.error {
+    font-weight: 800;
+    color: red;
+}

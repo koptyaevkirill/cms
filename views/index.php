@@ -24,7 +24,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <?php if(Session::get('loggedIn') == true):?>
+                    <?php if(Session::get('UserID')):?>
                         <li><a href="/logout">Logout</a></li>
                     <?php else: ?>
                         <li><a href="/registration">Registration</a></li>
@@ -50,5 +50,8 @@
             </div>		
 	</div>	
     </div>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
 </body>
 </html>
