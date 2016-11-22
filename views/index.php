@@ -10,6 +10,7 @@
     <link href="static/css/bootstrap.css" rel="stylesheet">
     <link href="static/css/bootstrap-theme.css" rel="stylesheet">
     <link href="static/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -50,7 +51,6 @@
             </div>		
 	</div>	
     </div>
-    <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/js/main.js"></script>
 </body>

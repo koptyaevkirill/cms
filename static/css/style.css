@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:400,300,700,900');
+/*@import url('https://fonts.googleapis.com/css?family=Lato:400,300,700,900');*/
 body {
     background-color: #f2f2f2;
     font-family: 'Lato', sans-serif;
@@ -242,3 +242,5 @@ p.error {
     font-weight: 800;
     color: red;
 }
+.mt10 {margin-top: 10px}
+.mt20 {margin-top: 20px}

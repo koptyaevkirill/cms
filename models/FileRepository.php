@@ -14,12 +14,13 @@ class FileRepository extends Repository {
         return $query->fetch();
     }
     public function save($data) {
-        $query = $this->em->prepare('INSERT INTO test (login,password) VALUES(:email,:password)');
+        $query = $this->em->prepare('INSERT INTO testFiles (ulr, created_at, user_id) VALUES(:name, :createdAt, :userID)');
         $query->execute(array(
-            ':email' => $data['email'],
-            ':password' => $data['password']
+            ':name' => $data['name'],
+            ':createdAt' => $data['createdAt'],
+            ':userID' => $data['userID']
         ));
-        return $query->fetch();
+        return $this->em->lastInsertId();
     }
 }
 

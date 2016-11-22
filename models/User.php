@@ -20,24 +20,19 @@ class User {
     
     /**
      * Get id
-     * @return integer
      */
     public function getId() {
         return $this->id;
     }
     /**
      * Set id
-     * @param integer $id id
-     * @return this
      */
     public function setId($id) {
         $this->id = $id;
         return $this;
     }
     /**
-     * Set login
-     * @param strign $email
-     * @return this
+     * Set email
      */
     public function setEmail($email) {
         $this->email = $email;
@@ -45,7 +40,6 @@ class User {
     }
     /**
      * Get email
-     * @return string
      */
     public function getEmail() {
         return $this->email;
@@ -98,7 +92,6 @@ class User {
     
     /**
      * Converts user to array
-     * @return array
      */
     public function toArray() {
         return [

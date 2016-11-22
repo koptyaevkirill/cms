@@ -7,4 +7,8 @@ return [
     '/logout' => ['user', 'index', 'logout'],
     '/registration' => ['user', 'index', 'registration'],
     '/registration_check' => ['user', 'index', 'registrationSave'],
+    
+    '/manager' => ['userfiles', 'index', 'index'],
+    '/upload' => ['userfiles', 'index', 'upload'],
+    '/files' => ['userfiles', 'index', 'get'],
 ];

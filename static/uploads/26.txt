@@ -1,0 +1,488 @@
+Disassembly of File: E:\ПО\Лр.3. (System software)\w32dasm_ru\noname.dat
+Code Offset = 00000000, Code Size = 0000017B
+Data Offset = 00000000, Data Size = 00000000
+
+Number of Objects = 0001 (dec), Imagebase = 00000000h
+
+   Object01:          RVA: 00000000 Offset: 00000000 Size: 0000017B Flags: 00000000
+
+
+Number of Imported Modules =    0 (decimal)
+
+
++++++++++++++++++++ IMPORT MODULE DETAILS +++++++++++++++
+
++++++++++++++++++++ EXPORTED FUNCTIONS ++++++++++++++++++
+Number of Exported Functions = 0000 (decimal)
+
+
+
+
++++++++++++++++++++ ASSEMBLY CODE LISTING ++++++++++++++++++
+//********************** Start of Code in Object BinaryCode **************
+Program Entry Point Not Available
+
+
+
+//********************** Start of Code in Segment: 1 **************
+
+:0001.0000 33C0                   xor ax, ax //обнуление ax
+:0001.0002 8ED0                   mov ss, ax //копируем значение ax в ss
+:0001.0004 BC007C                 mov sp, 7C00 //пересылаем в sp 7с00
+:0001.0007 FB                     sti // if=1
+:0001.0008 50                     push ax //размещаем содержимое ax в стек
+:0001.0009 07                     pop es //восстанавливаем содержимое ax в es
+:0001.000A 50                     push ax
+:0001.000B 1F                     pop ds
+:0001.000C FC                     cld
+:0001.000D BE1B7C                 mov si, 7C1B
+:0001.0010 BF1B06                 mov di, 061B
+:0001.0013 50                     push ax
+:0001.0014 57                     push di
+:0001.0015 B9E501                 mov cx, 01E5
+:0001.0018 F3                     repz
+:0001.0019 A4                     movsb
+:0001.001A CB                     retf
+
+
+:0001.001B BDBE07                 mov bp, 07BE
+:0001.001E B104                   mov cl, 04
+:0001.0020 386E00                 cmp [bp+00], ch
+:0001.0023 7C09                   jl 002E
+:0001.0025 7513                   jne 003A
+:0001.0027 83C510                 add bp, 0010
+:0001.002A E2F4                   loop 0020
+:0001.002C CD18                   int 18
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.0023(C)
+|
+:0001.002E 8BF5                   mov si, bp
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.0038(C)
+|
+:0001.0030 83C610                 add si, 0010
+:0001.0033 49                     dec cx
+:0001.0034 7419                   je 004F
+:0001.0036 382C                   cmp [si], ch
+:0001.0038 74F6                   je 0030
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.0025(C)
+|
+:0001.003A A0B507                 mov al, [07B5]
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Addresses:
+|:0001.0069(C), :0001.007F(U), :0001.0092(U)
+|
+:0001.003D B407                   mov ah, 07
+:0001.003F 8BF0                   mov si, ax
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.004D(U)
+|
+:0001.0041 AC                     lodsb
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.0044(C)
+|
+:0001.0042 3C00                   cmp al, 00
+:0001.0044 74FC                   je 0042
+:0001.0046 BB0700                 mov bx, 0007
+:0001.0049 B40E                   mov ah, 0E
+:0001.004B CD10                   int 10
+:0001.004D EBF2                   jmp 0041
+
+
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.0034(C)
+|
+:0001.004F 884E10                 mov [bp+10], cl 
+:0001.0052 E84600                 call 009B
+:0001.0055 732A                   jnb 0081
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.008D(C)
+|
+:0001.0057 FE4610                 inc byte ptr [bp+10]
+:0001.005A 807E040B               cmp byte ptr [bp+04], 0B
+:0001.005E 740B                   je 006B
+:0001.0060 807E040C               cmp byte ptr [bp+04], 0C
+:0001.0064 7405                   je 006B
+:0001.0066 A0B607                 mov al, [07B6]
+:0001.0069 75D2                   jne 003D
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Addresses:
+|:0001.005E(C), :0001.0064(C)
+|
+:0001.006B 80460206               add byte ptr [bp+02], 06
+:0001.006F 83460806               add word ptr [bp+08], 0006
+:0001.0073 83560A00               adc word ptr [bp+0A], 0000
+:0001.0077 E82100                 call 009B
+:0001.007A 7305                   jnb 0081
+:0001.007C A0B607                 mov al, [07B6]
+:0001.007F EBBC                   jmp 003D
+
+
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Addresses:
+|:0001.0055(C), :0001.007A(C)
+|
+:0001.0081 813EFE7D55AA           cmp word ptr [7DFE], AA55
+:0001.0087 740B                   je 0094
+:0001.0089 807E1000               cmp byte ptr [bp+10], 00
+:0001.008D 74C8                   je 0057
+:0001.008F A0B707                 mov al, [07B7]
+:0001.0092 EBA9                   jmp 003D
+
+
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.0087(C)
+|
+:0001.0094 8BFC                   mov di, sp
+:0001.0096 1E                     push ds
+:0001.0097 57                     push di
+:0001.0098 8BF5                   mov si, bp
+:0001.009A CB                     retf
+
+
+
+* Referenced by a CALL at Addresses:
+|:0001.0052, :0001.0077
+|
+:0001.009B BF0500                 mov di, 0005
+:0001.009E 8A5600                 mov dl, [bp+00]
+:0001.00A1 B408                   mov ah, 08
+:0001.00A3 CD13                   int 13
+:0001.00A5 7223                   jb 00CA
+:0001.00A7 8AC1                   mov al , cl 
+:0001.00A9 243F                   and al, 3F
+:0001.00AB 98                     cbw
+:0001.00AC 8ADE                   mov bl , dh
+:0001.00AE 8AFC                   mov bh, ah
+:0001.00B0 43                     inc bx
+:0001.00B1 F7E3                   mul bx
+:0001.00B3 8BD1                   mov dx, cx
+:0001.00B5 86D6                   xchg dh, dl
+:0001.00B7 B106                   mov cl, 06
+:0001.00B9 D2EE                   shr dh, cl 
+:0001.00BB 42                     inc dx
+:0001.00BC F7E2                   mul dx
+:0001.00BE 39560A                 cmp [bp+0A], dx
+:0001.00C1 7723                   ja 00E6
+:0001.00C3 7205                   jb 00CA
+:0001.00C5 394608                 cmp [bp+08], ax
+:0001.00C8 731C                   jnb 00E6
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Addresses:
+|:0001.00A5(C), :0001.00C3(C), :0001.00E4(U)
+|
+:0001.00CA B80102                 mov ax, 0201
+:0001.00CD BB007C                 mov bx, 7C00
+:0001.00D0 8B4E02                 mov cx, [bp+02]
+:0001.00D3 8B5600                 mov dx, [bp]
+:0001.00D6 CD13                   int 13
+:0001.00D8 7351                   jnb 012B
+:0001.00DA 4F                     dec di
+:0001.00DB 744E                   je 012B
+:0001.00DD 32E4                   xor ah, ah
+:0001.00DF 8A5600                 mov dl, [bp+00]
+:0001.00E2 CD13                   int 13
+:0001.00E4 EBE4                   jmp 00CA
+
+
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Addresses:
+|:0001.00C1(C), :0001.00C8(C)
+|
+:0001.00E6 8A5600                 mov dl, [bp+00]
+:0001.00E9 60                     pusha
+:0001.00EA BBAA55                 mov bx, 55AA
+:0001.00ED B441                   mov ah, 41
+:0001.00EF CD13                   int 13
+:0001.00F1 7236                   jb 0129
+:0001.00F3 81FB55AA               cmp bx, AA55
+:0001.00F7 7530                   jne 0129
+:0001.00F9 F6C101                 test cl, 01
+:0001.00FC 742B                   je 0129
+:0001.00FE 61                     popa
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Address:
+|:0001.0127(U)
+|
+:0001.00FF 60                     pusha
+:0001.0100 6A00                   push 0000
+:0001.0102 6A00                   push 0000
+:0001.0104 FF760A                 push word ptr [bp+0A]
+:0001.0107 FF7608                 push word ptr [bp+08]
+:0001.010A 6A00                   push 0000
+:0001.010C 68007C                 push 7C00
+:0001.010F 6A01                   push 0001
+:0001.0111 6A10                   push 0010
+:0001.0113 B442                   mov ah, 42
+:0001.0115 8BF4                   mov si, sp
+:0001.0117 CD13                   int 13
+:0001.0119 61                     popa
+:0001.011A 61                     popa
+:0001.011B 730E                   jnb 012B
+:0001.011D 4F                     dec di
+:0001.011E 740B                   je 012B
+:0001.0120 32E4                   xor ah, ah
+:0001.0122 8A5600                 mov dl, [bp+00]
+:0001.0125 CD13                   int 13
+:0001.0127 EBD6                   jmp 00FF
+
+
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Addresses:
+|:0001.00F1(C), :0001.00F7(C), :0001.00FC(C)
+|
+:0001.0129 61                     popa
+:0001.012A F9                     stc
+
+* Referenced by a (U)nconditional or (C)onditional Jump at Addresses:
+|:0001.00D8(C), :0001.00DB(C), :0001.011B(C), :0001.011E(C)
+|
+:0001.012B C3                     ret
+:0001.012C 49                     dec cx
+:0001.012D 6E                     outsb
+:0001.012E 7661                   jbe 0191
+:0001.0130 6C                     insb
+:0001.0131 6964207061             imul sp, [si+20], 6170
+:0001.0136 7274                   jb 01AC
+:0001.0138 6974696F6E             imul si, [si+69], 6E6F
+:0001.013D 207461                 and [si+61], dh
+:0001.0140 626C65                 bound bp, [si+65]
+:0001.0143 004572                 add [di+72], al 
+:0001.0146 726F                   jb 01B7
+:0001.0148 7220                   jb 016A
+:0001.014A 6C                     insb
+:0001.014B 6F                     outsw
+:0001.014C 61                     popa
+:0001.014D 64696E67206F           imul bp, fs:[bp+67], 6F20
+:0001.0153 7065                   jo 01BA
+:0001.0155 7261                   jb 01B8
+:0001.0157 7469                   je 01C2
+:0001.0159 6E                     outsb
+:0001.015A 67207379               and byte ptr [ebx+79], dh
+:0001.015E 7374                   jnb 01D4
+:0001.0160 65                     BYTE 065h
+
+
+:0001.0161 6D                     insw
+:0001.0162 004D69                 add [di+69], cl 
+:0001.0165 7373                   jnb 01DA
+:0001.0167 696E67206F             imul bp, [bp+67], 6F20
+:0001.016C 7065                   jo 01D3
+:0001.016E 7261                   jb 01D1
+:0001.0170 7469                   je 01DB
+:0001.0172 6E                     outsb
+:0001.0173 67207379               and byte ptr [ebx+79], dh
+:0001.0177 7374                   jnb 01ED
+:0001.0179 65                     BYTE 065h
+
+
+:0001.017A 6D                     insw
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

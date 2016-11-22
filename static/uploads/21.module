@@ -1,0 +1,1643 @@
+<?php
+/**
+* @file
+* A description of what your module does.
+*/
+/**
+ * Implements hook_menu().
+ */
+function avtozap_menu()
+{
+    $items = array();
+    $items['parts'] = array(
+        'title' => '&#1047;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1080;',
+        'page callback' => 'avtozap_list_parts',
+        'access callback' => TRUE
+    );
+    $items['admin/parts'] = array(
+        'title' => '&#1040;&#1074;&#1090;&#1086;&#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1080;',
+        'access arguments' => array('administer avtozap'),
+        'page callback' => 'avtozap_administer_parts',
+        'type' => MENU_NORMAL_ITEM,
+        'theme callback' => 'seven'
+    );
+    $items['admin/parts/list'] = array(
+        'title' => '&#1057;&#1087;&#1080;&#1089;&#1086;&#1082; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081;',
+        'access arguments' => array('administer avtozap'),
+        'weight' => 0,
+        'type' => MENU_DEFAULT_LOCAL_TASK
+    );
+    $items['admin/parts/add'] = array(
+        'title' => '&#1044;&#1086;&#1073;&#1072;&#1074;&#1080;&#1090;&#1100; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1100;',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('avtozap_add_part'),
+        'access arguments' => array('avtozap add parts'),
+        'weight' => 1,
+        'type' => MENU_LOCAL_TASK
+    );
+    $items['admin/parts/edit/%'] = array(
+        'title' => '&#1048;&#1079;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1100;',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('avtozap_edit_part',3),
+        'access arguments' => array('avtozap edit parts')
+    );
+    $items['admin/parts/delete/%'] = array(
+        'title' => '&#1059;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1100;',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('avtozap_delete_part',3),
+        'access arguments' => array('avtozap delete parts')
+    );
+    $items['admin/parts/delete_all'] = array(
+        'title' => '&#1059;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100; &#1074;&#1089;&#1077; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1080;',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('avtozap_delete_all_parts'),
+        'access arguments' => array('avtozap delete parts'),
+        'weight' => 4,
+        'type' => MENU_LOCAL_TASK
+    );
+    $items['admin/parts/analytics'] = array(
+        'title' => '&#1042;&#1086;&#1081;&#1090;&#1080; &#1074; Google analytics',
+        'page callback' => 'avtozap_analytics',
+        'access arguments' => array('administer avtozap'),
+        'weight' => 30,
+        'type' => MENU_NORMAL_ITEM
+    );
+    $items['admin/parts/upload/price'] = array(
+        'title' => '&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1087;&#1088;&#1072;&#1081;&#1089;',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('avtozap_upload_price'),
+        'access arguments' => array('avtozap add parts'),
+        'weight' => 2,
+        'type' => MENU_LOCAL_TASK
+    );
+    $items['admin/parts/upload/processing'] = array(
+        'title' => '&#1055;&#1088;&#1086;&#1094;&#1077;&#1089;&#1089; &#1079;&#1072;&#1075;&#1088;&#1091;&#1079;&#1082;&#1080;',
+        'page callback' => 'avtozap_upload_processing',
+        'access arguments' => array('avtozap add parts'),
+        'type' => MENU_CALLBACK
+    );
+    $items['admin/parts/upload/cities'] = array(
+        'title' => '&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1075;&#1086;&#1088;&#1086;&#1076;&#1072;',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('avtozap_upload_cities'),
+        'access arguments' => array('avtozap add parts'),
+        'weight' => 3,
+        'type' => MENU_LOCAL_TASK
+    );
+    $items['admin/parts/orders'] = array(
+        'title' => '&#1057;&#1087;&#1080;&#1089;&#1086;&#1082; &#1079;&#1072;&#1082;&#1072;&#1079;&#1086;&#1074;',
+        'page callback' => 'avtozap_orders_list',
+        'access arguments' => array('avtozap edit parts'),
+        'weight' => 5,
+        'type' => MENU_LOCAL_TASK
+    );
+    $items['admin/parts/orders/accept/%'] = array(
+        'title' => '&#1055;&#1086;&#1076;&#1090;&#1074;&#1077;&#1088;&#1076;&#1080;&#1090;&#1100; &#1079;&#1072;&#1082;&#1072;&#1079;',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array("avtozap_order_accept",4),
+        'access arguments' => array('avtozap edit parts'),
+        'weight' => 5,
+        'type' => MENU_NORMAL_ITEM
+    );
+    $items['admin/parts/orders/decline/%'] = array(
+        'title' => '&#1054;&#1090;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100; &#1079;&#1072;&#1082;&#1072;&#1079;',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array("avtozap_order_decline",4),
+        'access arguments' => array('avtozap edit parts'),
+        'weight' => 5,
+        'type' => MENU_NORMAL_ITEM
+    );
+    $items['admin/parts/top'] = array(
+        'title' => '&#1058;&#1086;&#1087; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1087;&#1086; &#1084;&#1086;&#1076;&#1077;&#1083;&#1103;&#1084;',
+        'page callback' => array('avtozap_administer_top'),
+        'access arguments' => array('administer avtozap'),
+        'type' => MENU_LOCAL_TASK
+    );
+    $items['admin/parts/import1c'] = array(
+        'title' => '&#1048;&#1084;&#1087;&#1086;&#1088;&#1090; 1&#1057;',
+        'page callback' => array('avtozap_import1c'),
+        'access arguments' => array('administer avtozap'),
+        'type' => MENU_LOCAL_TASK
+    );		
+    $items['admin/parts/top/%'] = array(
+        'title' => '&#1050;&#1072;&#1090;&#1077;&#1075;&#1086;&#1088;&#1080;&#1103;',
+        'page callback' => array('avtozap_administer_top_category'),
+        'page arguments' => array(3),
+        'access arguments' => array('administer avtozap'),
+    );
+    $items['admin/parts/top/%/%'] = array(
+        'title' => '&#1052;&#1086;&#1076;&#1077;&#1083;&#1100;',
+        'page callback' => array('avtozap_administer_top_category_model'),
+        'page arguments' => array(3,4),
+        'access arguments' => array('administer avtozap'),
+    );
+    $items['cart'] = array(
+        'title' => '&#1050;&#1086;&#1088;&#1079;&#1080;&#1085;&#1072;',
+        'page callback' => 'avtozap_cart',
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content')
+    );
+    $items['register'] = array(
+        'title' => "&#1056;&#1077;&#1075;&#1080;&#1089;&#1090;&#1088;&#1072;&#1094;&#1080;&#1103; &#1087;&#1086;&#1083;&#1100;&#1079;&#1086;&#1074;&#1072;&#1090;&#1077;&#1083;&#1103;",
+        'page callback' => 'avtozap_register',
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content')
+    );
+    $items['cabinet'] = array(
+        'title' => "&#1051;&#1080;&#1095;&#1085;&#1099;&#1081; &#1082;&#1072;&#1073;&#1080;&#1085;&#1077;&#1090;",
+        'page callback' => 'avtozap_cabinet',
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content')
+    );
+    $items['vinrequest'] = array(
+        'title' => "&#1047;&#1072;&#1087;&#1088;&#1086;&#1089; &#1087;&#1086; VIN",
+        'page callback' => 'avtozap_vinrequest',
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+        'menu_name' => 'main-menu'
+    );
+    $items['ajax'] = array(
+        'page callback' => 'avtozap_ajax',
+        'type' => MENU_CALLBACK,
+        'access arguments' => array('access content'),
+        'delivery callback' => 'avtozap_ajax_delivery'
+    );
+    return $items;
+}
+
+function avtozap_import1c()
+{
+
+	$query = db_select('igo_parameters','a');
+	$query->fields('a',array('value'));
+	$query->condition('a.name','ic-import-datetime');
+	$result = $query->execute()->fetchField();	
+
+	$query = db_select('avtozap_parts', 'n');
+	$query->fields('n');
+	$count_avtozap_parts = $query->execute()->rowCount();
+	
+	$query = db_select('avtozap_cross', 'n');
+	$query->fields('n');
+	$count_avtozap_cross = $query->execute()->rowCount();
+	
+	$query = db_select('avtozap_brands', 'n');
+	$query->fields('n');
+	$count_avtozap_brands = $query->execute()->rowCount();	
+	
+	$html  ='<h1>&#1048;&#1084;&#1087;&#1086;&#1088;&#1090; &#1080;&#1079; 1&#1057;:&#1055;&#1088;&#1077;&#1076;&#1087;&#1088;&#1080;&#1103;&#1090;&#1080;&#1077;</h1><br>'; 
+	$html .='&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; &#1055;&#1088;&#1072;&#1081;&#1089;: '.$count_avtozap_parts.' &#1079;&#1072;&#1087;&#1080;&#1089;&#1077;&#1081;<BR>';
+	$html .='&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; &#1040;&#1085;&#1072;&#1083;&#1086;&#1075;&#1080;: '.$count_avtozap_cross.' &#1079;&#1072;&#1087;&#1080;&#1089;&#1077;&#1081;<BR>';
+	$html .='&#1058;&#1072;&#1073;&#1083;&#1080;&#1094;&#1072; &#1041;&#1088;&#1101;&#1085;&#1076;&#1099;: '.$count_avtozap_brands.' &#1079;&#1072;&#1087;&#1080;&#1089;&#1077;&#1081;<BR>';
+	$html .='<strong>&#1044;&#1072;&#1090;&#1072; &#1087;&#1086;&#1089;&#1083;&#1077;&#1076;&#1085;&#1077;&#1075;&#1086; &#1080;&#1084;&#1087;&#1086;&#1088;&#1090;&#1072;: <span style="font-size:180%">'.$result.'</span></strong>';
+	$html .='<form method="post">
+		<br>
+		<button name="cmd" value="import_1c">&#1048;&#1084;&#1087;&#1086;&#1088;&#1090;</button>
+	</form>';
+	
+	if (!empty($_POST['cmd'])) {
+		$cmd = $_POST['cmd'];
+		if ($cmd == "import_1c") {
+			require_once "script_1c_d3d44128.php"; //   /../../../../
+		} else {
+			
+		}	
+		//$result = date("d.m.Y H:i:s");
+	} else {
+	
+	}
+	
+    return $html;
+}
+
+function avtozap_analytics()
+{
+    drupal_goto("https://www.google.com/analytics/web/?et&authuser=0#report/defaultid/a71225108w108626313p113205615/");
+}
+
+function avtozap_administer_top()
+{
+    $query = db_select('avtozap_top','a');
+    $query->fields('a',array('article'));
+    $query->fields('b',array('name'));
+    $query->condition('a.name','');
+    $query->leftJoin('avtozap_parts','b','b.article=a.article');
+    $query = $query->execute();
+    while(($arr = $query->fetchAssoc()))
+    {
+        db_update('avtozap_top')
+            ->fields(array('name' => $arr['name']))
+            ->condition('article',$arr['article'])
+            ->execute();
+    }
+    $html = "";
+    $html .= '<a href="/admin/parts/top/infiniti">&#1058;&#1080;&#1087; Infiniti</a><br>';
+    $html .= '<a href="/admin/parts/top/nissan">&#1058;&#1080;&#1087; Nissan</a><br>';
+    $html .= '<a href="/admin/parts/top/renault">&#1058;&#1080;&#1087; Renault</a><br>';
+    $html .= '<a href="/admin/parts/top/kia">&#1058;&#1080;&#1087; Kia</a><br>';	
+    $html .= '<a href="/admin/parts/top/hyundai">&#1058;&#1080;&#1087; Hyundai</a><br>';	    
+    return $html;
+}
+function avtozap_administer_top_category($category)
+{
+    drupal_set_title("&#1050;&#1072;&#1090;&#1077;&#1075;&#1086;&#1088;&#1080;&#1103; $category");
+    $query = db_select('node_type','n');
+    $query->fields('n');
+    $query->condition('n.type','type_'.$category);
+    $query = $query->execute();
+    if($query->rowCount())
+    {
+        $query = db_select('node','n');
+        $query->fields('n');
+        $query->condition('n.type','type_'.$category);
+        $query = $query->execute();
+        if($query->rowCount())
+        {
+            $html = "";
+            foreach($query as $value)
+            {
+                $html .= '<a href="/admin/parts/top/'.$category.'/'.$value->nid.'">'.$value->title.'</a><br>';
+            }
+            return $html;
+        }
+        else
+        {
+            return "<h2>&#1042; &#1082;&#1072;&#1090;&#1077;&#1075;&#1086;&#1088;&#1080;&#1080; \"$category\" &#1087;&#1086;&#1082;&#1072; &#1085;&#1077;&#1090; &#1084;&#1086;&#1076;&#1077;&#1083;&#1077;&#1081;</h2>";
+        }
+    }
+    else
+    {
+        return "<h2>&#1053;&#1077; &#1089;&#1091;&#1097;&#1077;&#1089;&#1090;&#1074;&#1091;&#1077;&#1090; &#1082;&#1072;&#1090;&#1077;&#1075;&#1086;&#1088;&#1080;&#1080; \"$category\"</h2>";
+    }
+}
+function avtozap_administer_top_category_model($category,$model)
+{
+    drupal_add_js(drupal_get_path('theme','avtozap')."/jquery-2.1.4.min.js");
+    drupal_add_js(drupal_get_path('theme','avtozap')."/javascript.js");
+    $query = db_select('node','n')->fields('n')->condition('n.nid',$model)->execute();
+    $count = $query->rowCount();
+    $query = $query->fetchAssoc();
+    if($count)
+    {
+        drupal_set_title("&#1052;&#1086;&#1076;&#1077;&#1083;&#1100; ".$query['title']);
+        $query = db_select('avtozap_top','a');
+        $query->fields('a');
+        $query->condition('a.nid',$model);
+        $query = $query->execute();
+        $html = "";
+        $html .= '<div class="top">';
+        if($query->rowCount())
+        {
+            foreach($query as $value)
+            {
+                $html .= '<div class="row"><strong>'.$value->article.'</strong>&nbsp;<input type="text" value="'.$value->name.'" id="'.$value->id.'">&nbsp;<button class="update_tp" id="'.$value->id.'">&#1054;&#1073;&#1085;&#1086;&#1074;&#1080;&#1090;&#1100; &#1085;&#1072;&#1079;&#1074;&#1072;&#1085;&#1080;&#1077;</button><button class="delete_tp" id="'.$value->id.'">&#1059;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100; &#1080;&#1079; &#1089;&#1086;&#1086;&#1090;&#1074;&#1077;&#1090;&#1089;&#1090;&#1074;&#1080;&#1081;</button></div>';
+            }
+        }
+        else
+        {
+            $html .= '<h2>&#1042; &#1090;&#1086;&#1087; &#1087;&#1086;&#1082;&#1072; &#1085;&#1077; &#1076;&#1086;&#1073;&#1072;&#1074;&#1083;&#1077;&#1085;&#1086; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081;</h2>';
+        }
+        $html .= '</div>';
+        $html .= '&#1048;&#1089;&#1082;&#1072;&#1090;&#1100; &#1087;&#1086; &#1072;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;&#1091;: <input type="text" name="search" class="form-text" placeholder="&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;"><input type="hidden" name="model" value="'.$model.'"><button class="search_tp button">&#1053;&#1072;&#1081;&#1090;&#1080; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1100;</button>';
+        $html .= '<div class="part_list"></div>';
+        return $html;
+    }
+    else
+    {
+        return "<h2>&#1053;&#1077;&#1090; &#1090;&#1072;&#1082;&#1086;&#1081; &#1084;&#1086;&#1076;&#1077;&#1083;&#1080;</h2>";
+    }
+}
+function avtozap_vinrequest()
+{
+    return file_get_contents(drupal_get_path('theme','avtozap')."/templates/vin-request.html");
+}
+function avtozap_cabinet()
+{
+    global $user;
+    $contents = file_get_contents(drupal_get_path('theme','avtozap')."/templates/cabinet.html");
+    $orders = db_select("avtozap_orders","a")
+        ->fields("a")
+        ->condition("a.user_id",$user->uid)
+        ->orderBy("a.status","ASC")
+        ->orderBy("a.id","DESC")
+        ->execute();
+    $fields = "";
+    if(!$orders->rowCount())
+    {
+        $fields .= "<h4 style=\"color: #737373;\">&#1045;&#1097;&#1077; &#1085;&#1077;&#1090; &#1079;&#1072;&#1082;&#1072;&#1079;&#1086;&#1074;</h4>";
+    }
+    foreach($orders as $value)
+    {
+        if($value->status)
+            $fields .= '<div class="field-parts futurb info in-cabinet-non-active">';
+        else
+            $fields .= '<div class="field-parts futurb info in-cabinet">';
+        $fields .= '&#1047;&#1072;&#1082;&#1072;&#1079; &#8470;'.$value->id.' &#1086;&#1090; '.date("d.m.Y",strtotime($value->date)).'<span>&#1057;&#1090;&#1072;&#1090;&#1091;&#1089;:<span class="g"> &#1074; &#1086;&#1073;&#1088;&#1072;&#1073;&#1086;&#1090;&#1082;&#1077;</span></span></div>';
+        $fields .= '<div class="futurb top-row in-cabinet"><div class="c1">&#1053;&#1072;&#1079;&#1072;&#1074;&#1072;&#1085;&#1080;&#1077;</div><div class="c2">&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;</div><div class="c2">&#1055;&#1088;&#1086;&#1080;&#1079;&#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;</div><div class="c2">&#1062;&#1077;&#1085;&#1072; &#1088;&#1091;&#1073;.</div><div class="c2">&#1050;&#1086;&#1083;&#1080;&#1095;&#1077;&#1089;&#1090;&#1074;&#1086;</div></div>';
+
+        $order_parts = db_select("avtozap_order_parts","a");
+        $order_parts->fields("a",array("article","price_now","count"));
+        $order_parts->fields("o",array("name","manufacturer"));
+        $order_parts->leftJoin("avtozap_parts","o","(a.article=o.article)");
+        $order_parts->condition("a.order_id",$value->id);
+        $order_parts = $order_parts->execute();
+
+        $cost = 0;
+        foreach($order_parts as $part)
+        {
+            $fields .= '<div class="field-parts basket-row futurb in-cabinet">';
+            $fields .= '<div class="c1">'.$part->name.'</div>';
+            $fields .= '<div class="c2">'.$part->article.'</div>';
+            $fields .= '<div class="c2">'.$part->manufacturer.'</div>';
+            $fields .= '<div class="c2">'.$part->price_now.'</div>';
+            $fields .= '<div class="c2">';
+            $fields .= '<div class="control tahoma"><span class="count">'.$part->count.'</span></div>';
+            $fields .= '</div></div>';
+            $cost += $part->price_now * $part->count;
+        }
+        $fields .= '<hr>';
+        $fields .= '<div class="total-box futurb"><div class="price"><span class="f">&#1057;&#1091;&#1084;&#1084;&#1072; &#1079;&#1072;&#1082;&#1072;&#1079;&#1072;:</span> '.$cost.' &#1088;&#1091;&#1073;.</div></div>';
+    }
+    $contents = preg_replace("/@fields@/",$fields,$contents);
+
+    $info = db_select("avtozap_user_info","a")
+        ->fields("a")
+        ->condition("a.uid",$user->uid)
+        ->execute()
+        ->fetchAssoc();
+
+    $anketa = "";
+    $anketa .= '<div class="row futurb"> <p>&#1060;&#1048;&#1054;.<span class="f">*</span></p><input class="long" name="fio" value="'.$info['fio'].'" type="text"></div>';
+    $anketa .= '<div class="row futurb"><p>&#1042;&#1072;&#1096; &#1075;&#1086;&#1088;&#1086;&#1076;:</p><select name="city" class="tahoma short">';
+    $qr = db_select("avtozap_cities", "a")
+        ->fields("a")
+        ->execute();
+    foreach ($qr as $value) {
+        $anketa .= '<option class="tahoma" value="' . $value->id . '"';
+        if ($info['city'] == $value->id)
+            $anketa .= ' selected';
+        $anketa .= '>' . $value->name . '</option>';
+    }
+    $anketa .= '</select></div>';
+    $anketa .= '<div class="row futurb"><p>&#1040;&#1076;&#1088;&#1077;&#1089; &#1076;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1080;:</p><input class="short" name="address" value="'.$info['address'].'" type="text"></div>';
+    $anketa .= '<div class="row futurb"><p>&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;:<span class="f">*</span></p><input class="long" type="text" name="phone" value="'.$info['phone'].'" placeholder="+7 (_ _ _) _ _ _ _ _ _ _"></div>';
+    $anketa .= '<div class="row futurb"><p>E-mail:<span class="f">*</span></p><input class="long" type="text" name="email" value="'.$info['email'].'" placeholder="example@mail.com"></div>';
+
+    $contents = preg_replace("/@anketa@/",$anketa,$contents);
+
+    return $contents;
+}
+
+function avtozap_orders_list()
+{
+    $query = db_select("avtozap_orders","a");
+    $query->fields("a");
+    $query->fields("o",array("name"));
+    $query->condition("a.status",0);
+    $query->leftJoin("avtozap_cities","o","(a.city=o.id)");
+    $query = $query->execute();
+    if(!$query->rowCount())
+        return "<strong>&#1040;&#1082;&#1090;&#1080;&#1074;&#1085;&#1099;&#1093; &#1079;&#1072;&#1082;&#1072;&#1079;&#1086;&#1074; &#1085;&#1077;&#1090;.</strong>";
+    $html = "<strong>&#1057;&#1087;&#1080;&#1089;&#1086;&#1082; &#1072;&#1082;&#1090;&#1080;&#1074;&#1085;&#1099;&#1093; &#1079;&#1072;&#1082;&#1072;&#1079;&#1086;&#1074;</strong><br><br>";
+    foreach($query as $value)
+    {
+        $html .= '<hr><strong>&#1047;&#1072;&#1082;&#1072;&#1079; &#8470;'.$value->id.'</strong><br>&#1060;&#1048;&#1054;: '.$value->fio.'<br>&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;: '.$value->phone.'<br>&#1043;&#1086;&#1088;&#1086;&#1076;: '.$value->name.'<br>&#1040;&#1076;&#1088;&#1077;&#1089;: '.$value->address.'<br>&#1044;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1072;: '.$value->delivery.'<br>E-mail:'.$value->email.'<br>&#1044;&#1080;&#1089;&#1082;&#1086;&#1085;&#1090;&#1085;&#1072;&#1103; &#1082;&#1072;&#1088;&#1090;&#1072;:'.$value->diskont;
+        $html .= '<table><tr><th>&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;</th><th>&#1053;&#1072;&#1080;&#1084;&#1077;&#1085;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;</th><th>&#1062;&#1077;&#1085;&#1072; &#1086;&#1076;&#1085;&#1086;&#1081;(&#1085;&#1072; &#1084;&#1086;&#1084;&#1077;&#1085;&#1090; &#1079;&#1072;&#1082;&#1072;&#1079;&#1072;), &#1088;&#1091;&#1073;.</th><th>&#1050;&#1086;&#1083;&#1080;&#1095;&#1077;&#1089;&#1090;&#1074;&#1086;</th><th>&#1057;&#1090;&#1086;&#1080;&#1084;&#1086;&#1089;&#1090;&#1100;(&#1087;&#1086; &#1094;&#1077;&#1085;&#1072;&#1084; &#1085;&#1072; &#1084;&#1086;&#1084;&#1077;&#1085;&#1090; &#1079;&#1072;&#1082;&#1072;&#1079;&#1072;), &#1088;&#1091;&#1073;.</th></tr>';
+        $ords = db_select("avtozap_order_parts","a");
+        $ords->fields("a",array("article","price_now","count"));
+        $ords->fields("o",array("name"));
+        $ords->condition("a.order_id",$value->id);
+        $ords->leftJoin("avtozap_parts","o","(a.article=o.article)");
+        $ords = $ords->execute();
+        $cost = 0;
+        foreach($ords as $part)
+        {
+            $cost += $part->count * $part->price_now;
+            $html .= '<tr><td>'.$part->article.'</td><td>'.$part->name.'</td><td>'.$part->price_now.'</td><td>'.$part->count.'</td><td>'.($part->count * $part->price_now).'</td></tr>';
+        }
+        $html .= '</table><strong>&#1057;&#1090;&#1086;&#1080;&#1084;&#1086;&#1089;&#1090;&#1100;: '.$cost.' &#1088;&#1091;&#1073;.<br><a href="/admin/parts/orders/accept/'.$value->id.'">&#1055;&#1086;&#1076;&#1090;&#1074;&#1077;&#1088;&#1076;&#1080;&#1090;&#1100; &#1079;&#1072;&#1082;&#1072;&#1079;</a><br><a href="/admin/parts/orders/decline/'.$value->id.'">&#1054;&#1090;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100; &#1079;&#1072;&#1082;&#1072;&#1079;</a><hr>';
+    }
+    return $html;
+}
+
+function avtozap_register()
+{
+    $html = '';
+    $html .= '<div class="w903"><div class="crumbs futurb"><a href="/" >&#1043;&#1083;&#1072;&#1074;&#1085;&#1072;&#1103;</a>\\<a href="#" >&#1056;&#1077;&#1075;&#1080;&#1089;&#1090;&#1088;&#1072;&#1094;&#1080;&#1103; &#1082;&#1083;&#1080;&#1077;&#1085;&#1090;&#1072;</a></div></div>';
+    $html .= '<div class="w903 futurb center">&#1056;&#1077;&#1075;&#1080;&#1089;&#1090;&#1088;&#1072;&#1094;&#1080;&#1103; <span class="f">&#1082;&#1083;&#1080;&#1077;&#1085;&#1090;&#1072;</span></div><div class="w903">';
+    $html .= '<div class="row futurb"><p>&#1051;&#1086;&#1075;&#1080;&#1085;<span class="f">*</span></p><input class="long" name="login" type="text"></div>';
+    $html .= '<div class="row futurb"><p>&#1055;&#1072;&#1088;&#1086;&#1083;&#1100;<span class="f">*</span></p><input class="short" name="password" type="password"></div>';
+    $html .= '<div class="row futurb"><p>&#1055;&#1086;&#1076;&#1090;&#1074;&#1077;&#1088;&#1078;&#1076;&#1077;&#1085;&#1080;&#1077;<span class="f">*</span></p><input class="short" name="confirm" type="password"></div>';
+    $html .= '<div class="row futurb"><p>&#1060;&#1048;&#1054;.<span class="f">*</span></p><input class="long" name="fio" type="text"></div>';
+    $html .= '<div class="row futurb"><p>&#1042;&#1072;&#1096; &#1075;&#1086;&#1088;&#1086;&#1076;:</p><select class="tahoma short" name="city">';
+    $query = db_select("avtozap_cities","a")
+            ->fields("a")
+            ->execute("a");
+    foreach($query as $value)
+    {
+        $html .= '<option class="tahoma" value="'.$value->id.'">'.$value->name.'</option>';
+    }
+    $html .= '</select></div>';
+    $html .= '<div class="row futurb"><p>&#1040;&#1076;&#1088;&#1077;&#1089; &#1076;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1080;:</p><input class="short" name="address" type="text"></div>';
+    //$html .= '<div class="row futurb"><p>&#1042;&#1072;&#1096; VIN:</p><input class="short" type="text"></div>';
+    $html .= '<div class="row futurb"><p>&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;:<span class="f">*</span></p><input class="long" name="phone" type="text" placeholder="+7 (_ _ _) _ _ _ _ _ _ _"></div>';
+    $html .= '<div class="row futurb"><p>E-mail:<span class="f">*</span></p><input class="long" name="email" type="text" placeholder="example@mail.com"></div>';
+    $html .= '<div class="center"><button class="button alt-button" name="register">&#1056;&#1077;&#1075;&#1080;&#1089;&#1090;&#1088;&#1072;&#1094;&#1080;&#1103;</button></div></div>';
+    return $html;
+}
+
+function avtozap_cart()
+{
+    global $user;
+    $contents = file_get_contents(drupal_get_path('theme','avtozap')."/templates/cart.html");
+    $cost = 0;
+    $list = "";
+    foreach($_SESSION['cart'] as $key => $value)
+    {
+        $item = db_select("avtozap_parts","a")
+            ->fields("a")
+            ->condition("a.article",$key)
+            ->execute()
+            ->fetchAssoc();
+        $cost += $value*$item['price_order'];
+        $list .= "<div class=\"basket-row in-basket futurb\"><div class=\"c3\">".$item['name']."</div><div class=\"c2\">".$key."</div><div class=\"c2\"><div class=\"control tahoma\"><!--<span class=\"inc\">+</span>--><span class=\"count\">".$value."</span><!--<span class=\"dec\">-</span>--></div></div><div class=\"c2\">".$item['price_order']."</div></div>";
+    }
+    $contents = preg_replace("/@rows@/",$list,$contents);
+    $contents = preg_replace("/@order_cost@/",round($cost,2),$contents);
+    $form = "";
+    $form .= "<form action=\"/order\" method=\"GET\">";
+    if($user->uid)
+    {
+        $uinfo = db_select("avtozap_user_info", "a")
+            ->fields("a")
+            ->condition("uid", $user->uid)
+            ->execute();
+        if ($uinfo->rowCount()) {
+            $info = $uinfo->fetchAssoc();
+            $form .= '<div class="row futurb"><p>&#1060;&#1048;&#1054;<span class="f">*</span></p><input class="long" type="text" name="fio" value="' . $info['fio'] . '" disabled></div>';
+            $form .= '<div class="row futurb"><p>&#1044;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1072;:</p><select name="delivery" class="tahoma short"><option class="tahoma" value="&#1050;&#1091;&#1088;&#1100;&#1077;&#1088;">&#1050;&#1091;&#1088;&#1100;&#1077;&#1088;</option><option class="tahoma" value="&#1057;&#1072;&#1084;&#1086;&#1074;&#1099;&#1074;&#1086;&#1079;">&#1057;&#1072;&#1084;&#1086;&#1074;&#1099;&#1074;&#1086;&#1079;</option></select></div>';
+            $form .= '<div class="row futurb"><p>&#1042;&#1072;&#1096; &#1075;&#1086;&#1088;&#1086;&#1076;</p><select name="city" class="tahoma short" disabled>';
+            $qr = db_select("avtozap_cities", "a")
+                ->fields("a")
+                ->execute();
+            foreach ($qr as $value) {
+                $form .= '<option class="tahoma" value="' . $value->id . '"';
+                if ($info['city'] == $value->id)
+                    $form .= ' selected';
+                $form .= '>' . $value->name . '</option>';
+            }
+            $form .= '</select></div>';
+            $form .= '<div class="row futurb"><p>&#1040;&#1076;&#1088;&#1077;&#1089; &#1076;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1080;</p><input type="text" class="short" name="address" value="' . $info['address'] . '" disabled></div>';
+            $form .= '<div class="row futurb"><p>&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;</p><span class="f">*</span><input type="text" class="long" name="phone" value="' . $info['phone'] . '" disabled></div>';
+            $form .= '<div class="row futurb"><p>E-mail</p><span class="f">*</span><input type="text" class="long" name="email" value="' . $info['email'] . '" disabled></div>';
+        }
+        else
+        {
+            $form .= '<div class="row futurb"><p>&#1060;&#1048;&#1054;<span class="f">*</span></p><input class="long" type="text" name="fio" value=""></div>';
+            $form .= '<div class="row futurb"><p>&#1044;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1072;:</p><select name="delivery" class="tahoma short"><option class="tahoma" value="&#1050;&#1091;&#1088;&#1100;&#1077;&#1088;">&#1050;&#1091;&#1088;&#1100;&#1077;&#1088;</option><option class="tahoma" value="&#1057;&#1072;&#1084;&#1086;&#1074;&#1099;&#1074;&#1086;&#1079;">&#1057;&#1072;&#1084;&#1086;&#1074;&#1099;&#1074;&#1086;&#1079;</option></select></div>';
+            $form .= '<div class="row futurb"><p>&#1042;&#1072;&#1096; &#1075;&#1086;&#1088;&#1086;&#1076;</p><select name="city" class="tahoma short" disabled>';
+            $qr = db_select("avtozap_cities", "a")
+                ->fields("a")
+                ->execute();
+            foreach ($qr as $value) {
+                $form .= '<option class="tahoma" value="' . $value->id . '">' . $value->name . '</option>';
+            }
+            $form .= '</select></div>';
+            $form .= '<div class="row futurb"><p>&#1040;&#1076;&#1088;&#1077;&#1089; &#1076;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1080;</p><input type="text" class="short" name="address" value=""></div>';
+            $form .= '<div class="row futurb"><p>&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;</p><span class="f">*</span><input type="text" class="long" name="phone" value=""></div>';
+            $form .= '<div class="row futurb"><p>E-mail</p><span class="f">*</span><input type="text" class="long" name="email" value=""></div>';
+        }
+    }
+    else
+    {
+        $form .= '<div class="row futurb"><p>&#1060;&#1048;&#1054;<span class="f">*</span></p><input class="long" type="text" name="fio" value=""></div>';
+        $form .= '<div class="row futurb"><p>&#1044;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1072;:</p><select name="delivery" class="tahoma short"><option class="tahoma" value="&#1050;&#1091;&#1088;&#1100;&#1077;&#1088;">&#1050;&#1091;&#1088;&#1100;&#1077;&#1088;</option><option class="tahoma" value="&#1057;&#1072;&#1084;&#1086;&#1074;&#1099;&#1074;&#1086;&#1079;">&#1057;&#1072;&#1084;&#1086;&#1074;&#1099;&#1074;&#1086;&#1079;</option></select></div>';
+        $form .= '<div class="row futurb"><p>&#1042;&#1072;&#1096; &#1075;&#1086;&#1088;&#1086;&#1076;</p><select name="city" class="tahoma short" disabled>';
+        $qr = db_select("avtozap_cities", "a")
+            ->fields("a")
+            ->execute();
+        foreach ($qr as $value) {
+            $form .= '<option class="tahoma" value="' . $value->id . '">' . $value->name . '</option>';
+        }
+        $form .= '</select></div>';
+        $form .= '<div class="row futurb"><p>&#1040;&#1076;&#1088;&#1077;&#1089; &#1076;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1080;</p><input type="text" class="short" name="address" value=""></div>';
+        $form .= '<div class="row futurb"><p>&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;</p><span class="f">*</span><input type="text" class="long" name="phone" value=""></div>';
+        $form .= '<div class="row futurb"><p>E-mail</p><span class="f">*</span><input type="text" class="long" name="email" value=""></div>';
+    }
+    $form .= '<div class="center"><button class="button alt-button center" name="make_order">&#1079;&#1072;&#1082;&#1072;&#1079;&#1072;&#1090;&#1100;</button></div>';
+    $form .= "</form>";
+    $contents = preg_replace("/@order_date@/",date("d.m.Y"),$contents);
+    $contents = preg_replace("/@form@/",$form,$contents);
+    return $contents;
+}
+
+function avtozap_ajax()
+{
+    drupal_session_start();
+    switch($_GET['request'])
+    {
+        case "part_to_cart":
+            $count = db_select("avtozap_parts","a")
+                ->fields("a")
+                ->condition("article",$_GET['article'])
+                ->execute()
+                ->rowCount();
+            if($count == 1)
+            {
+                if(!isset($_SESSION['cart']))
+                    $_SESSION['cart'] = array();
+                if(!isset($_SESSION['cart'][$_GET['article']]))
+                    $_SESSION['cart'][$_GET['article']] = $_GET['count'];
+                else $_SESSION['cart'][$_GET['article']] += $_GET['count'];
+                return "ok";
+            }
+            else
+            {
+                return "fail";
+            }
+            break;
+        case "cart_info":
+            $info = array();
+            $info['counter'] = avtozap_cartcounter_content();
+            $info['cart'] = avtozap_cartbox_content();
+            return json_encode($info);
+            break;
+        case "cart_item_count":
+            if(isset($_SESSION['cart'][$_GET['article']]))
+            {
+                $_SESSION['cart'][$_GET['article']] = intval($_GET['count']);
+            }
+            break;
+        case "cart_remove":
+            if(isset($_SESSION['cart'][$_GET['article']]))
+            {
+                unset($_SESSION['cart'][$_GET['article']]);
+            }
+            break;
+        case "cart_clear":
+            unset($_SESSION['cart']);
+            break;
+        case "make_order":
+            global $user;
+            $mail_arr = array();
+            $info = array(
+                "date" => date("Y-m-d"),
+                "user_id" => ($user->uid ? $user->uid : 0),
+                "fio" => ($_GET["fio"] ? $_GET["fio"] : ""),
+                "city" => ($_GET["city"] ? $_GET["city"] : 0),
+                "delivery" => ($_GET["delivery"] ? $_GET["delivery"] : ""),
+                "address" => ($_GET["address"] ? $_GET["address"] : ""),
+                "phone" => ($_GET["phone"] ? $_GET["phone"] : ""),
+                "email" => ($_GET["email"] ? $_GET["email"] : ""),
+                "diskont" => ($_GET["diskont"] ? $_GET["diskont"] : ""),
+                "status" => 0
+            );
+            $mail_arr = $info;
+
+            $id = db_insert("avtozap_orders")
+                ->fields($info)
+                ->execute();
+            $mail_arr['id'] = $id;
+            $info['date'] = date("d.m.Y");
+            $mail_arr['date'] = $info['date'];
+            $info["id"] = $id;
+
+            $query = db_select('avtozap_cities','a')
+                ->fields('a')
+                ->condition('a.id',$info['city'])
+                ->execute()
+                ->fetchAssoc();
+            $mail_arr['city'] = $query['name'];
+
+            $mail_arr['parts'] = array();
+            foreach($_SESSION['cart'] as $key => $value)
+            {
+                $query = db_select("avtozap_parts","a")
+                    ->fields("a")
+                    ->condition("a.article",$key)
+                    ->execute();
+                if($query->rowCount() > 0)
+                {
+                    $item = $query->fetchAssoc();
+                    $mail_arr['parts'][$item['article']] = array('name' => $item['name'], 'price_order' => $item['price_order'], 'count' => $value);
+                    db_insert("avtozap_order_parts")
+                        ->fields(array(
+                            "order_id" => $id,
+                            "article" => $item["article"],
+                            "price_now" => $item["price_order"],
+                            "count" => $value))
+                        ->execute();
+                }
+            }
+            unset($_SESSION['cart']);
+            drupal_mail('avtozap','make-order',avtozap_owner_email(),language_default(),$mail_arr);
+            return json_encode($info);
+            break;
+        case "register_user":
+            $login = $_GET['login'];
+            $pass = $_GET['password'];
+            $fields = array(
+                'name' => $login,
+                'mail' => $_GET['email'],
+                'pass' => $pass,
+                'status' => 1,
+                'init' => 'email address',
+                'roles' => array(
+                    DRUPAL_AUTHENTICATED_RID => 'authenticated user'
+                )
+            );
+            $account = user_save('',$fields);
+            db_insert("avtozap_user_info")
+                ->fields(array(
+                    "uid" => $account->uid,
+                    "fio" => $_GET['fio'],
+                    "city" => ($_GET['city'] ? $_GET['city'] : 0),
+                    "address" => $_GET['address'],
+                    "phone" => $_GET['phone'],
+                    "vin" => "",
+                    "email" => $_GET['email']
+                ))
+                ->execute();
+            $account->password = $fields['pass'];
+            //drupal_mail('user', 'register_no_approval_required', $fields['email'], NULL, array('account' => $account), variable_get('site_mail', 'noreply@example..com'));
+            return $account->uid;
+            break;
+        case "user_update":
+            global $user;
+            if(db_select("avtozap_user_info","a")->fields("a")->condition("a.uid",$user->uid)->execute()->rowCount())
+            {
+                db_update("avtozap_user_info")
+                    ->condition("uid",$user->uid)
+                    ->fields(array(
+                        "fio" => $_GET['fio'],
+                        "city" => ($_GET['city'] ? $_GET['city'] : 0),
+                        "address" => $_GET['address'],
+                        "phone" => $_GET['phone'],
+                        "vin" => "",
+                        "email" => $_GET['email']
+                    ))
+                    ->execute();
+            }
+            else
+            {
+                db_insert("avtozap_user_info")
+                    ->fields(array(
+                        "uid" => $user->uid,
+                        "fio" => $_GET['fio'],
+                        "city" => ($_GET['city'] ? $_GET['city'] : 0),
+                        "address" => $_GET['address'],
+                        "phone" => $_GET['phone'],
+                        "vin" => "",
+                        "email" => $_GET['email']
+                    ))
+                    ->execute();
+            }
+            break;
+        case "vin_request":
+            drupal_mail('avtozap','vin-request',avtozap_owner_email(),language_default(),$_GET);
+            break;
+        case "top_search_parts":
+            $_GET['search'] = preg_replace("/[\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\[\\]\\'\\\"\\/\\-\\+\\s\\.\\,]+/","",$_GET['search']);
+            $query = db_select('avtozap_parts','a');
+            $query->fields('a');
+            $query->condition('a.article','%'.db_like($_GET['search']).'%','LIKE');
+            $query->condition('a.status',1);
+            $query = $query->execute();
+            $res = array();
+            while(($arr = $query->fetchAssoc())) $res[] = $arr;
+            return json_encode($res);
+            break;
+        case "top_add_part":
+            $result = array();
+            $result['article'] = $_GET['article'];
+            $result['name'] = $_GET['name'];
+            $query = db_select('avtozap_top','a');
+            $query->fields('a');
+            $query->condition('a.article',$result['article']);
+            $query->condition('a.nid',$_GET['nid']);
+            $query = $query->execute();
+            if(!$query->rowCount())
+            {
+                $result['id'] = db_insert('avtozap_top')
+                    ->fields(array(
+                        'article' => $result['article'],
+                        'name' => $result['name'],
+                        'nid' => $_GET['nid']
+                    ))
+                    ->execute();
+                $result['result'] = 'ok';
+            }
+            else
+            {
+                $result['result'] = 'too match';
+            }
+            return json_encode($result);
+            break;
+        case "top_update_part":
+            db_update('avtozap_top')
+                ->condition('id',$_GET['id'])
+                ->fields(array(
+                    'name' => $_GET['name']
+                ))
+                ->execute();
+            break;
+        case "top_delete_part":
+            $result['id'] = $_GET['id'];
+            db_delete('avtozap_top')
+                ->condition('id',$result['id'])
+                ->execute();
+            return json_encode($result);
+            break;
+        case "upload_price":
+            drupal_session_start();
+            //require drupal_get_path('module','avtozap')."/excel/PHPExcel/IOFactory.php";
+            //require drupal_get_path('module','avtozap')."/excel/PHPExcel.php";
+            require "excel/PHPExcel/IOFactory.php";
+            require "excel/PHPExcel.php";
+
+            class chunkReadFilter implements PHPExcel_Reader_IReadFilter
+            {
+                private $_startRow;
+                private $_endRow;
+                public function setRows($startRow,$chunkSize)
+                {
+                    $this->_startRow = $startRow;
+                    $this->_endRow = $startRow+$chunkSize-1;
+                }
+                public function readCell($column, $row, $worksheetName = '') {
+                    if (($row >= $this->_startRow && $row <= $this->_endRow)) {
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+
+            $fid = $_SESSION['avtozap_upload']['fid'];
+            $startRow = $_SESSION['avtozap_upload']['i'];;
+            $file = file_load($fid);
+            $realfile = drupal_realpath("public://".$file->filename);
+            $inputFileType = PHPExcel_IOFactory::identify($realfile);
+
+            $chunkSize = 1000;
+
+            $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+            $objReader->setReadDataOnly(true);
+            $chunkFilter = new chunkReadFilter();
+            $chunkFilter->setRows($startRow,$chunkSize);
+            $objReader->setReadFilter($chunkFilter);
+            $objFile = $objReader->load($realfile);
+            $sheet = $objFile->getSheet(0);
+
+            $highestRow = $sheet->getHighestRow();
+
+            for($i = $startRow; $i <= $highestRow; $i++)
+            {
+                $_SESSION['avtozap_upload']['i'] = $i;
+                $gid = $sheet->getCell("A".$i)->getValue();
+                $name = $sheet->getCell("B".$i)->getValue();
+                $manufacturer = strval($sheet->getCell("C".$i)->getValue());
+                $article = strval($sheet->getCell("D".$i)->getValue());
+                $count = intval($sheet->getCell("E".$i)->getValue());
+                $price = floatval($sheet->getCell("F".$i)->getValue());
+                if($article == "Null" || $article == "" || strlen($article) < 3)
+                {
+                    continue;
+                }
+                if($manufacturer == "Null" || $manufacturer == "")
+                {
+                    continue;
+                }
+                if($name == "Null" || $name == "")
+                {
+                    continue;
+                }
+                if(!$gid || $gid=="Null" || $gid == "")
+                {
+                    $gid = "nope";
+                }
+                if(!is_numeric($price))
+                {
+                    $price = 0;
+                }
+                $query = db_select("avtozap_parts","a");
+                $query->fields("a");
+                $query->condition("a.article",$article);
+                $query = $query->execute();
+                if($query->rowCount())
+                {
+                    db_update("avtozap_parts")
+                        ->fields(array(
+                            'gid' => $gid,
+                            'name' => $name,
+                            'price_order' => $price,
+                            'manufacturer' => $manufacturer,
+                            'count' => $count,
+                            'status' => 1
+                        ))
+                        ->condition("article",$article)
+                        ->execute();
+                }
+                else
+                {
+                    db_insert("avtozap_parts")
+                        ->fields(array(
+                            'gid' => $gid,
+                            'article' => $article,
+                            'name' => $name,
+                            'price_order' => $price,
+                            'manufacturer' => $manufacturer,
+                            'popularity' => 0,
+                            'count' => $count,
+                            'status' => 1
+                        ))
+                        ->execute();
+                }
+            }
+            $_SESSION['avtozap_upload']['i'] = $highestRow+1;
+            $sheet->disconnectCells();
+            $objFile->disconnectWorksheets();
+            unset($sheet);
+            unset($objFile);
+            if($startRow+$chunkSize-1>$highestRow)
+            {
+                file_delete($file);
+                unset($_SESSION['avtozap_upload']);
+                return json_encode(array('finish' => 'yes', 'count' => '&#1047;&#1072;&#1075;&#1088;&#1091;&#1078;&#1077;&#1085;&#1086; '.($highestRow-1)));
+            }
+            else
+            {
+                return json_encode(array('finish' => 'no', 'count' => '&#1047;&#1072;&#1075;&#1088;&#1091;&#1078;&#1077;&#1085;&#1086; '.($highestRow-1).' &#1079;&#1072;&#1087;&#1080;&#1089;&#1077;&#1081;'));
+            }
+            break;
+        default: return "unknown request type"; break;
+    }
+}
+function avtozap_owner_email()
+{
+    //return "tda@renisshop.ru";
+    //return "zibertscrem@gmail.com";
+    return variable_get('site_mail','');
+}
+function avtozap_genarate($number)
+{
+    $alphavit = "abcdefghijklmnopqrstuvwxyz0123456789";
+    $pass = "";
+    for($i = 0; $i<$number; $i++)
+    {
+        $pass .= $alphavit[rand(0,strlen($alphavit)-1)];
+    }
+    return $pass;
+}
+
+function avtozap_ajax_delivery($page_callback_result)
+{
+    echo render($page_callback_result);
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function avtozap_block_info()
+{
+    $items = array();
+    $items['cartbox'] = array(
+        'info' => '&#1050;&#1086;&#1088;&#1079;&#1080;&#1085;&#1072;',
+        'cache' => DRUPAL_NO_CACHE
+    );
+    $items['cartcounter'] = array(
+        'info' => '&#1057;&#1095;&#1077;&#1090;&#1095;&#1080;&#1082; &#1082;&#1086;&#1088;&#1079;&#1080;&#1085;&#1099;',
+        'cache' => DRUPAL_NO_CACHE
+    );
+    return $items;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function avtozap_block_view($delta = '')
+{
+    $block = array();
+    switch($delta)
+    {
+        case 'cartcounter':
+            $block['subject'] = NULL;
+            $block['content'] = avtozap_cartcounter_content();
+            break;
+        case 'cartbox':
+            $block['subject'] = NULL;
+            $block['content'] = avtozap_cartbox_content();
+            break;
+    }
+    return $block;
+}
+function avtozap_cartcounter_content()
+{
+    drupal_session_start();
+    $count = 0;
+    foreach($_SESSION['cart'] as $value)
+    {
+        $count += $value;
+    }
+    if($count > 0)
+        return strval($count);
+    else return "";
+}
+function avtozap_cartbox_content()
+{
+    drupal_session_start();
+    $count = intval(avtozap_cartcounter_content());
+    if($count > 0)
+    {
+        $retval = "";
+        foreach($_SESSION['cart'] as $key => $value)
+        {
+            $query = db_select("avtozap_parts","a")
+                ->fields("a")
+                ->condition("a.article",$key)
+                ->execute();
+            if($query->rowCount() > 0)
+            {
+                $item = $query->fetchAssoc();
+                $retval .= "<div class=\"item tahoma\"><div class=\"name tahoma\">".$item['name']."</div><div class=\"control tahoma\"><span class=\"inc\">+</span><span class=\"count\" article=\"".$item['article']."\">".$value."</span><span class=\"dec\">-</span></div><div class=\"img remove\" article=\"".$item['article']."\"></div></div>";
+            }
+            else
+            {
+                unset($_SESSION['cart'][$key]);
+            }
+        }
+        $retval .= "<div class=\"pad\"><div class=\"tahoma\" id=\"issue\">&#1054;&#1092;&#1086;&#1088;&#1084;&#1080;&#1090;&#1100; &#1079;&#1072;&#1082;&#1072;&#1079;</div><div class=\"tahoma\" id=\"clear\">&#1054;&#1095;&#1080;&#1089;&#1090;&#1080;&#1090;&#1100;</div></div>";
+        return $retval;
+    }
+    else
+    {
+        return "<h3 class=\"item tahoma\">&#1042; &#1082;&#1086;&#1088;&#1079;&#1080;&#1085;&#1077; &#1085;&#1080;&#1095;&#1077;&#1075;&#1086; &#1085;&#1077;&#1090;</h3>";
+    }
+}
+/**
+ * Implements hook_permission().
+ */
+function avtozap_permission()
+{
+    $items = array();
+    $items['administer avtozap'] = array(
+        'title' => '&#1040;&#1076;&#1084;&#1080;&#1085;&#1080;&#1089;&#1090;&#1088;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077; &#1084;&#1086;&#1076;&#1091;&#1083;&#1103;',
+        'description' => '&#1040;&#1076;&#1084;&#1080;&#1085;&#1080;&#1089;&#1090;&#1088;&#1080;&#1088;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077; &#1084;&#1086;&#1076;&#1091;&#1083;&#1103; &#1072;&#1074;&#1090;&#1086;&#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081;',
+        'restrict access' => TRUE
+    );
+    $items['avtozap add parts'] = array(
+        'title' => '&#1044;&#1086;&#1073;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1076;&#1077;&#1090;&#1072;&#1083;&#1077;&#1081;',
+        'description' => '&#1044;&#1086;&#1073;&#1072;&#1074;&#1083;&#1077;&#1085;&#1080;&#1077; &#1085;&#1086;&#1074;&#1099;&#1093; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1085;&#1072; &#1089;&#1072;&#1081;&#1090;',
+        'restrict access' => TRUE
+    );
+    $items['avtozap edit parts'] = array(
+        'title' => '&#1048;&#1079;&#1084;&#1077;&#1085;&#1077;&#1085;&#1080;&#1077; &#1076;&#1077;&#1090;&#1072;&#1083;&#1077;&#1081;',
+        'description' => '&#1048;&#1079;&#1084;&#1077;&#1085;&#1077;&#1085;&#1080;&#1077; &#1089;&#1091;&#1097;&#1077;&#1089;&#1090;&#1074;&#1091;&#1102;&#1097;&#1080;&#1093; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1085;&#1072; &#1089;&#1072;&#1081;&#1090;&#1077;',
+        'restrict access' => TRUE
+    );
+    $items['avtozap delete parts'] = array(
+        'title' => '&#1059;&#1076;&#1072;&#1083;&#1077;&#1085;&#1080;&#1077; &#1076;&#1077;&#1090;&#1072;&#1083;&#1077;&#1081;',
+        'description' => '&#1059;&#1076;&#1072;&#1083;&#1077;&#1085;&#1080;&#1077; &#1089;&#1091;&#1097;&#1077;&#1089;&#1090;&#1074;&#1091;&#1102;&#1097;&#1080;&#1093; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1085;&#1072; &#1089;&#1072;&#1081;&#1090;&#1077;',
+        'restrict access' => TRUE
+    );
+    $items['vin request'] = array(
+        'title' => '&#1047;&#1072;&#1087;&#1088;&#1086;&#1089; &#1087;&#1086; VIN',
+        'description' => '&#1047;&#1072;&#1076;&#1072;&#1085;&#1080;&#1077; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1072; &#1087;&#1086; VIN',
+        'restrict access' => TRUE
+    );
+    return $items;
+}
+
+/**
+ * Implements hook_mail().
+ */
+function avtozap_mail($key, &$message, $params)
+{
+    switch($key)
+    {
+        case "vin-request":
+            $message['subject'] = "&#1053;&#1086;&#1074;&#1099;&#1081; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089; &#1087;&#1086; VIN-&#1085;&#1086;&#1084;&#1077;&#1088;&#1091;";
+            $message['body'][] = "&#1060;&#1048;&#1054;: ".$params['fio']."\n&#1052;&#1072;&#1088;&#1082;&#1072;: ".$params['avto']."\nVIN: ".$params['vin']."\n&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;: ".$params['phone']."\nE-mail: ".$params['email']."\n&#1046;&#1077;&#1083;&#1072;&#1077;&#1084;&#1099;&#1077; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1080;: ".$params['parts'];
+            break;
+        case "make-order":
+            $message['subject'] = "&#1053;&#1086;&#1074;&#1099;&#1081; &#1079;&#1072;&#1082;&#1072;&#1079;";
+            $body = "&#1047;&#1072;&#1082;&#1072;&#1079; &#8470;".$params['id']." &#1086;&#1090; ".$params['date'];
+            $body .= "\n&#1060;&#1048;&#1054; &#1079;&#1072;&#1082;&#1072;&#1079;&#1095;&#1080;&#1082;&#1072;: ".$params['fio'];
+            $body .= "\n&#1044;&#1086;&#1089;&#1090;&#1072;&#1074;&#1082;&#1072;: ".$params['delivery'];
+            $body .= "\n&#1043;&#1086;&#1088;&#1086;&#1076;: ".$params['city'];
+            $body .= "\n&#1040;&#1076;&#1088;&#1077;&#1089;: ".$params['address'];
+            $body .= "\n&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085;: ".$params['phone'];
+            $body .= "\nE-mail: ".$params['email'];
+            $body .= "\n&#1047;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1080; &#1080;&#1079; &#1079;&#1072;&#1082;&#1072;&#1079;&#1072;:";
+            foreach($params['parts'] as $k => $v)
+            {
+                $body .= "\n&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;: ".$k.", &#1085;&#1072;&#1080;&#1084;&#1077;&#1085;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;: ".$v['name'].", &#1087;&#1088;&#1080; &#1094;&#1077;&#1085;&#1077; &#1079;&#1072; &#1096;&#1090;&#1091;&#1082;&#1091;: ".$v['price_order']." &#1088;&#1091;&#1073;., &#1074; &#1082;&#1086;&#1083;&#1080;&#1095;&#1077;&#1089;&#1090;&#1074;&#1077; ".$v['count']." &#1096;&#1090;&#1091;&#1082;";
+            }
+            $message['body'][] = $body;
+            break;
+    }
+}
+function avtozap_list_parts()
+{
+    $html = "<div class='w903'>";
+    if(isset($_GET['model']))
+    {
+        $query = db_select('avtozap_top','a');
+        $query->fields('a',array('nid','name','article'));
+        $query->condition('a.nid',$_GET['model']);
+        $query->leftJoin('avtozap_parts','b','b.article=a.article');
+        $query->fields('b',array('manufacturer'));
+        $query->orderBy('a.name','ASC');
+        //$query->condition('b.status',1);
+        $query = $query->execute();
+        if($query->rowCount())
+        {
+            $title = db_query("SELECT title FROM {node} WHERE nid = :nid", array(':nid' => $_GET['model']))->fetchField();
+            $manufactur = db_query("SELECT type FROM {node} WHERE nid = :nid", array(':nid' => $_GET['model']))->fetchField();
+            $html .= '<div class="crumbs futurb"><a href="/" >&#1043;&#1083;&#1072;&#1074;&#1085;&#1072;&#1103;</a>\<a href="/'.substr($manufactur, 5, strlen($manufactur)-5).'" >'.ucfirst(substr($manufactur, 5, strlen($manufactur)-5)).'</a>\<a href="/node/'.$_GET['model'].'?model='.$_GET['model'].'" >'.$title.'</a></div><div class="w903"><center><span class="f">&#1047;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1080; &#1076;&#1083;&#1103; &#1058;&#1054;: '.$title.'</span></center><div class="futurb top-row-parts"><div class="c2"></div><div class="c1">&#1053;&#1072;&#1079;&#1074;&#1072;&#1085;&#1080;&#1077;</div><div class="c2">&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;</div><div class="c2">&#1055;&#1088;&#1086;&#1080;&#1079;&#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;</div><div class="c2"></div></div>';
+            foreach($query as $value)
+            {
+				//$html .= transliteration_get("&#1074;&#1089;&#1077;&#1084; &#1087;&#1088;&#1080;&#1074;&#1077;&#1090;");
+                $html .= "<div class='w903 b-row'>
+							<div class=\"field-parts basket-row futurb\" article=\"".$value->article."\">
+							  <div class=\"c2\"></div><div class=\"c1\">".$value->name."</div>
+							  <div class=\"c2\">".$value->article."</div>
+							  <div class=\"c2\">".$value->manufacturer."</div>
+							  <div class=\"c2\">
+								<div class=\"control tahoma\"></div>
+							  </div>
+							</div>
+							<a class=\"button alt-button search\" title=\"&#1055;&#1086;&#1080;&#1089;&#1082;\" href=\"/parts?search=".$value->article."&type=1\"></a>
+						 </div>";
+            }
+            $html .= '</div><hr>';
+        }
+        else return "<div class='w903'><div class='center'>&#1053;&#1077;&#1090; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1087;&#1086; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1091;</div></div>";
+
+    }
+    else
+    {
+        if(isset($_GET['search']) && isset($_GET['type']))
+        {
+
+            switch($_GET['type'])
+            {
+                case 1:
+                    $_GET['search'] = preg_replace("/[\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\[\\]\\'\\\"\\/\\-\\+\\s\\.\\,]+/","",$_GET['search']);
+                    $query = db_select('avtozap_parts','a');
+                    $query->fields('a');
+                    $query->condition('a.article',$_GET['search']);
+                    $query = $query->execute();
+                    if($query->rowCount()>0)
+                    {
+                        $have_one = false;
+                        $value = $query->fetchAssoc();
+                        if($value['status'] == '1' && $value['count'] > 0)
+                        {
+                            $have_one = true;
+                            $html .= '<div class="futurb top-row-parts"><div class="c1">&#1053;&#1072;&#1079;&#1072;&#1074;&#1072;&#1085;&#1080;&#1077;</div><div class="c2">&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;</div><div class="c2">&#1055;&#1088;&#1086;&#1080;&#1079;&#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;</div><div class="c2">&#1062;&#1077;&#1085;&#1072; &#1088;&#1091;&#1073;.</div><div class="c2">&#1050;&#1086;&#1083;&#1080;&#1095;&#1077;&#1089;&#1090;&#1074;&#1086;</div></div>';
+                            $html .= "<div class='w903 b-row'><div class=\"field-parts basket-row futurb\" article=\"".$value['article']."\"><div class=\"c1\">".$value['name']."</div><div class=\"c2\">".$value['article']."</div><div class=\"c2\">".$value['manufacturer']."</div><div class=\"c2\">".$value['price_order']."</div><div class=\"c2\"><div class=\"control tahoma\"><span class=\"inc\">+</span><span class=\"count\">1</span><span class=\"dec\">-</span></div></div></div><button class=\"button alt-button buy\" title=\"&#1044;&#1086;&#1073;&#1072;&#1074;&#1080;&#1090;&#1100; &#1074; &#1082;&#1086;&#1088;&#1079;&#1080;&#1085;&#1091;\" article=\"".$value['article']."\"></button></div>";
+                        }
+                        if($value['gid'] != 'nope')
+                        {
+                            $query = db_select('avtozap_parts','a');
+                            $query->fields('a');
+                            $query->condition('a.gid',$value['gid']);
+                            $query->condition('a.status',1);
+                            $query->condition('a.article',$value['article'],'<>');
+                            $query->condition('a.count',0,'>');
+                            $query = $query->execute();
+                            if($query->rowCount())
+                            {
+                                $have_one = true;
+                                $html .= '<center><span class="f">&#1040;&#1085;&#1072;&#1083;&#1086;&#1075;&#1080;:</span></center>';
+                                $html .= '<div class="futurb top-row-parts"><div class="c1">&#1053;&#1072;&#1079;&#1072;&#1074;&#1072;&#1085;&#1080;&#1077;</div><div class="c2">&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;</div><div class="c2">&#1055;&#1088;&#1086;&#1080;&#1079;&#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;</div><div class="c2">&#1062;&#1077;&#1085;&#1072; &#1088;&#1091;&#1073;.</div><div class="c2">&#1050;&#1086;&#1083;&#1080;&#1095;&#1077;&#1089;&#1090;&#1074;&#1086;</div></div>';
+                                while(($value = $query->fetchAssoc()))
+                                {
+                                    $html .= "<div class='w903 b-row'><div class=\"field-parts basket-row futurb\" article=\"".$value['article']."\"><div class=\"c1\">".$value['name']."</div><div class=\"c2\">".$value['article']."</div><div class=\"c2\">".$value['manufacturer']."</div><div class=\"c2\">".$value['price_order']."</div><div class=\"c2\"><div class=\"control tahoma\"><span class=\"inc\">+</span><span class=\"count\">1</span><span class=\"dec\">-</span></div></div></div><button class=\"button alt-button buy\" title=\"&#1044;&#1086;&#1073;&#1072;&#1074;&#1080;&#1090;&#1100; &#1074; &#1082;&#1086;&#1088;&#1079;&#1080;&#1085;&#1091;\" article=\"".$value['article']."\"></button></div>";
+                                }
+                            }
+                        }
+                        if(!$have_one)
+                        {
+                            return "<div class='w903'><div class='center'>&#1053;&#1077;&#1090; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1087;&#1086; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1091;</div></div>";
+                        }
+                    }
+                    else
+                    {
+                        return "<div class='w903'><div class='center'>&#1053;&#1077;&#1090; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1087;&#1086; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1091;</div></div>";
+                    }
+                    break;
+                case 2:
+                    $_GET['search'] = db_like($_GET['search']);
+                    $exist = (preg_replace("/[\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\[\\]\\'\\\"\\/\\-\\+\\s\\.\\,]+/","",$_GET['search']) != "");
+                    $_GET['search'] = preg_replace("/[\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\[\\]\\'\\\"\\/\\-\\+\\s\\.\\,]+/","%",$_GET['search']);
+                    $query = db_select('avtozap_parts','a');
+                    $query->fields('a');
+                    $query->condition('a.name','%'.$_GET['search'].'%','LIKE');
+                    $query->condition('a.status',1);
+                    $query->condition('a.count',0,'>');
+                    $query = $query->execute();
+                    if($query->rowCount() && $exist)
+                    {
+                        $html .= '<div class="futurb top-row-parts"><div class="c1">&#1053;&#1072;&#1079;&#1072;&#1074;&#1072;&#1085;&#1080;&#1077;</div><div class="c2">&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;</div><div class="c2">&#1055;&#1088;&#1086;&#1080;&#1079;&#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;</div><div class="c2">&#1062;&#1077;&#1085;&#1072; &#1088;&#1091;&#1073;.</div><div class="c2">&#1050;&#1086;&#1083;&#1080;&#1095;&#1077;&#1089;&#1090;&#1074;&#1086;</div></div>';
+                        foreach($query as $value)
+                        {
+                            $html .= "<div class='w903 b-row'><div class=\"field-parts basket-row basket-row-alt futurb\" article=\"".$value->article."\"><div class=\"c1\">".$value->name."</div><div class=\"c2\">".$value->article."</div><div class=\"c2\">".$value->manufacturer."</div><div class=\"c2\">".$value->price_order."</div><div class=\"c2\"><div class=\"control tahoma\"><span class=\"inc\">+</span><span class=\"count\">1</span><span class=\"dec\">-</span></div></div></div><button class=\"button alt-button buy\" title=\"&#1044;&#1086;&#1073;&#1072;&#1074;&#1080;&#1090;&#1100; &#1074; &#1082;&#1086;&#1088;&#1079;&#1080;&#1085;&#1091;\" article=\"".$value->article."\"></button><a class=\"button alt-button search\" title=\"&#1048;&#1089;&#1082;&#1072;&#1090;&#1100; &#1072;&#1085;&#1072;&#1083;&#1086;&#1075;&#1080;\" href=\"/parts?search=".$value->article."&type=1\"></a></div>";
+                        }
+                    }
+                    else
+                    {
+                        return "<div class='w903'><div class='center'>&#1053;&#1077;&#1090; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1087;&#1086; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1091;</div></div>";
+                    }
+                    break;
+            }
+        }
+    }
+    $html .= "</div>";
+    return $html;
+}
+function avtozap_administer_parts()
+{
+    $html = "";
+    $parts = db_select('avtozap_parts','a')
+        ->fields('a')
+        ->condition("a.status","1")
+        ->execute();
+    if($parts->rowCount() == 0)
+    {
+        return "<strong>&#1047;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1087;&#1086;&#1082;&#1072; &#1077;&#1097;&#1077; &#1085;&#1077;&#1090;</strong>";
+    }
+    else
+    {
+        $html .= "<table><tbody><tr><th>GID</th><th>&#1053;&#1072;&#1080;&#1084;&#1077;&#1085;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;</th><th>&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;</th><th>&#1048;&#1079;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100;</th><th>&#1059;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100;</th></tr>";
+        foreach($parts as $value):
+            $html .= "<tr><td>".$value->gid."</td><td>".$value->name."</td><td>".$value->article."</td><td><a href=\"/admin/parts/edit/".$value->article."\">&#1048;&#1079;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100;</a></td><td><a href=\"/admin/parts/delete/".$value->article."\">&#1059;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100;</a></td></tr>";
+        endforeach;
+        return $html;
+    }
+}
+function avtozap_delete_all_parts($form,&$form_state)
+{
+    $res = db_select('avtozap_parts','a')
+        ->fields('a')
+        ->execute()
+        ->rowCount();
+    if($res == 0)
+    {
+        drupal_set_message('&#1053;&#1077;&#1090; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081; &#1076;&#1083;&#1103; &#1091;&#1076;&#1072;&#1083;&#1077;&#1085;&#1080;&#1103;','error');
+        drupal_goto('/admin/parts');
+        return $form;
+    }
+    else
+    {
+        $form['item'] = array(
+            '#type' => 'item',
+            '#title' => '&#1042;&#1099; &#1091;&#1074;&#1077;&#1088;&#1077;&#1085;&#1099;, &#1095;&#1090;&#1086; &#1093;&#1086;&#1090;&#1080;&#1090;&#1077; &#1091;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100;  &#1074;&#1089;&#1077; '.$res.' &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1077;&#1081;?'
+        );
+        $form['submit'] = array(
+            '#type' => 'submit',
+            '#value' => '&#1059;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100;',
+            '#attributes' => array(
+                'class' => array('button')
+            )
+        );
+        return $form;
+    }
+}
+function avtozap_delete_all_parts_validate($form,&$form_state){ }
+function avtozap_delete_all_parts_submit($form,&$form_state)
+{
+    db_update("avtozap_parts")
+        ->fields(array(
+            'status' => 0
+        ))
+        ->execute();
+    drupal_set_message('&#1042;&#1089;&#1077; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1080; &#1091;&#1076;&#1072;&#1083;&#1077;&#1085;&#1099;');
+    drupal_goto('/admin/parts');
+
+}
+function avtozap_order_accept($form,&$form_state,$id)
+{
+    $form['id'] = array(
+        '#type' => 'hidden',
+        '#value' => $id
+    );
+    $form['item'] = array(
+        '#type' => 'item',
+        '#title' => '&#1042;&#1099; &#1091;&#1074;&#1077;&#1088;&#1077;&#1085;&#1099;, &#1095;&#1090;&#1086; &#1093;&#1086;&#1090;&#1080;&#1090;&#1077; &#1087;&#1086;&#1076;&#1090;&#1074;&#1077;&#1088;&#1078;&#1080;&#1090;&#1100; &#1079;&#1072;&#1082;&#1072;&#1079; &#8470;'.$id.'?'
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => '&#1055;&#1086;&#1076;&#1090;&#1074;&#1077;&#1088;&#1076;&#1080;&#1090;&#1100;',
+        '#attributes' => array(
+            'class' => array('button')
+        )
+    );
+    return $form;
+}
+function avtozap_order_accept_validate($form,&$form_state){}
+function avtozap_order_accept_submit($form,&$form_state)
+{
+    db_update("avtozap_orders")
+        ->condition("id",$form_state['values']['id'])
+        ->fields(array("status" => 1))
+        ->execute();
+    $query = db_select("avtozap_order_parts","a");
+    $query->fields("a",array("article"));
+    $query->fields("o",array("popularity"));
+    $query->condition("a.order_id",$form_state['values']['id']);
+    $query->leftJoin("avtozap_parts","o","(a.article=o.article)");
+    $query = $query->execute();
+    foreach($query as $value)
+    {
+        db_update("avtozap_parts")
+            ->fields(array("popularity" => $value->popularity+1))
+            ->condition("article",$value->article)
+            ->execute();
+    }
+    drupal_set_message('&#1047;&#1072;&#1082;&#1072;&#1079; &#8470;'.$form_state['values']['id'].' &#1087;&#1086;&#1076;&#1090;&#1074;&#1077;&#1088;&#1078;&#1076;&#1077;&#1085; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086;');
+    drupal_goto('/admin/parts/orders');
+}
+function avtozap_order_decline($form,&$form_state,$id)
+{
+    $form['id'] = array(
+        '#type' => 'hidden',
+        '#value' => $id
+    );
+    $form['item'] = array(
+        '#type' => 'item',
+        '#title' => '&#1042;&#1099; &#1091;&#1074;&#1077;&#1088;&#1077;&#1085;&#1099;, &#1095;&#1090;&#1086; &#1093;&#1086;&#1090;&#1080;&#1090;&#1077; &#1086;&#1090;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100; &#1079;&#1072;&#1082;&#1072;&#1079; &#8470;'.$id.'?'
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => '&#1055;&#1086;&#1076;&#1090;&#1074;&#1077;&#1088;&#1076;&#1080;&#1090;&#1100;',
+        '#attributes' => array(
+            'class' => array('button')
+        )
+    );
+    return $form;
+}
+function avtozap_order_decline_validate($form,&$form_state){}
+function avtozap_order_decline_submit($form,&$form_state)
+{
+    db_update("avtozap_orders")
+        ->condition("id",$form_state['values']['id'])
+        ->fields(array("status" => -1))
+        ->execute();
+    drupal_set_message('&#1047;&#1072;&#1082;&#1072;&#1079; &#8470;'.$form_state['values']['id'].' &#1086;&#1090;&#1084;&#1077;&#1085;&#1077;&#1085; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086;');
+    drupal_goto('/admin/parts/orders');
+}
+function avtozap_delete_part($form,&$form_state,$article)
+{
+    $res = db_select('avtozap_parts','a')
+        ->fields('a')
+        ->condition('a.article',$article)
+        ->execute()
+        ->rowCount();
+    if($res == 0)
+    {
+        drupal_set_message('&#1053;&#1077;&#1090; &#1090;&#1072;&#1082;&#1086;&#1081; &#1079;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1080;','error');
+        return $form;
+    }
+    else
+    {
+        $res = db_select('avtozap_parts','a')
+            ->fields('a')
+            ->condition('a.article',$article)
+            ->execute()
+            ->fetchAssoc();
+        $form['old_article'] = array(
+            '#type' => 'hidden',
+            '#value' => $article
+        );
+        $form['item'] = array(
+            '#type' => 'item',
+            '#title' => '&#1042;&#1099; &#1091;&#1074;&#1077;&#1088;&#1077;&#1085;&#1099;, &#1095;&#1090;&#1086; &#1093;&#1086;&#1090;&#1080;&#1090;&#1077; &#1091;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100; '.$res['article'].'?'
+        );
+        $form['submit'] = array(
+            '#type' => 'submit',
+            '#value' => '&#1059;&#1076;&#1072;&#1083;&#1080;&#1090;&#1100;',
+            '#attributes' => array(
+                'class' => array('button')
+            )
+        );
+        return $form;
+    }
+}
+function avtozap_delete_part_validate($form,&$form_state){   }
+function avtozap_delete_part_submit($form,&$form_state)
+{
+    $values = &$form_state['values'];
+    db_update("avtozap_parts")
+        ->fields(array(
+            'status' => '0'
+        ))
+        ->condition('article',$values['old_article'])
+        ->execute();
+    drupal_set_message('&#1059;&#1076;&#1072;&#1083;&#1077;&#1085;&#1086; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086; '.$values['old_article']);
+    drupal_goto('/admin/parts');
+}
+function avtozap_edit_part($form,&$form_state,$article)
+{
+    $res = db_select('avtozap_parts','a')
+        ->fields('a')
+        ->condition('a.article',$article)
+        ->execute()
+        ->fetchAssoc();
+    $form['old_article'] = array(
+        '#type' => 'hidden',
+        '#value' => $article
+    );
+    $form['gid'] = array(
+        '#type' => 'textfield',
+        '#title' => 'GID:',
+        '#default_value' => $res['gid'],
+        '#required' => TRUE
+    );
+    $form['article'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;:',
+        '#default_value' => $article,
+        '#required' => TRUE
+    );
+    $form['manufacturer'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1055;&#1088;&#1086;&#1080;&#1079;&#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;:',
+        '#default_value' => $res['manufacturer'],
+        '#required' => TRUE
+    );
+    $form['name'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1053;&#1072;&#1080;&#1084;&#1077;&#1085;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;:',
+        '#default_value' => $res['name'],
+        '#required' => TRUE
+    );
+    $form['price_order'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1062;&#1077;&#1085;&#1072; &#1079;&#1072;&#1082;&#1072;&#1079;&#1072;:',
+        '#default_value' => $res['price_order'],
+        '#required' => TRUE
+    );
+    $form['count'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1054;&#1089;&#1090;&#1072;&#1090;&#1086;&#1082; &#1085;&#1072; &#1089;&#1082;&#1083;&#1072;&#1076;&#1077;:',
+        '#default_value' => $res['count'],
+        '#required' => TRUE
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => '&#1048;&#1079;&#1084;&#1077;&#1085;&#1080;&#1090;&#1100;',
+        '#attributes' => array(
+            'class' => array('button')
+        )
+    );
+    return $form;
+}
+function avtozap_edit_part_validate($form,&$form_state)
+{
+    $values = &$form_state['values'];
+    $values['article'] = preg_replace("/\\s/","",$values['article']);
+    $res = 0;
+    if($values['old_article'] != $values['article'])
+        $res = db_select('avtozap_parts','a')
+            ->fields('a')
+            ->condition('a.article',$values['article'])
+            ->execute()
+            ->rowCount();
+    if($res > 0)
+    {
+        form_set_error('article','&#1058;&#1072;&#1082;&#1086;&#1081; &#1072;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083; &#1091;&#1078;&#1077; &#1079;&#1072;&#1085;&#1103;&#1090;');
+    }
+    if(!(strlen($values['article']) > 0))
+    {
+        form_set_error('article','&#1053;&#1077;&#1076;&#1086;&#1087;&#1091;&#1089;&#1090;&#1080;&#1084;&#1086;&#1077; &#1079;&#1085;&#1072;&#1095;&#1077;&#1085;&#1080;&#1077; &#1072;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;&#1072;');
+    }
+    if(!is_numeric($values['price_order']))
+    {
+        form_set_error('price_order','&#1053;&#1077;&#1076;&#1086;&#1087;&#1091;&#1089;&#1090;&#1080;&#1084;&#1086;&#1077; &#1079;&#1085;&#1072;&#1095;&#1077;&#1085;&#1080;&#1077; &#1094;&#1077;&#1085;&#1099; &#1079;&#1072;&#1082;&#1072;&#1079;&#1072;');
+    }
+    if(!is_numeric($values['count']))
+    {
+        form_set_error('count','&#1053;&#1077;&#1076;&#1086;&#1087;&#1091;&#1089;&#1090;&#1080;&#1084;&#1086;&#1077; &#1079;&#1085;&#1072;&#1095;&#1077;&#1085;&#1080;&#1077; &#1082;&#1086;&#1083;&#1080;&#1095;&#1077;&#1089;&#1090;&#1074;&#1072;');
+    }
+}
+function avtozap_edit_part_submit($form,&$form_state)
+{
+    $values = &$form_state['values'];
+    db_update('avtozap_parts')
+        ->condition('article',$values['old_article'])
+        ->fields(array(
+            'gid' => $values['gid'],
+            'article' => $values['article'],
+            'manufacturer' => $values['manufacturer'],
+            'name' => $values['name'],
+            'price_order' => $values['price_order'],
+            'count' => $values['count'],
+        ))
+        ->execute();
+    drupal_set_message('&#1048;&#1079;&#1084;&#1077;&#1085;&#1077;&#1085;&#1086; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086;');
+    drupal_goto('/admin/parts/edit/'.$values['article']);
+}
+function avtozap_add_part($form, &$form_state)
+{
+    $form['gid'] = array(
+        '#type' => 'textfield',
+        '#title' => 'GID:',
+        '#required' => TRUE
+    );
+    $form['article'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1040;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;:',
+        '#required' => TRUE
+    );
+    $form['manufacturer'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1055;&#1088;&#1086;&#1080;&#1079;&#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;:',
+        '#required' => TRUE
+    );
+    $form['name'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1053;&#1072;&#1080;&#1084;&#1077;&#1085;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077;:',
+        '#required' => TRUE
+    );
+    $form['price_order'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1062;&#1077;&#1085;&#1072; &#1079;&#1072;&#1082;&#1072;&#1079;&#1072;:',
+        '#required' => TRUE
+    );
+    $form['count'] = array(
+        '#type' => 'textfield',
+        '#title' => '&#1054;&#1089;&#1090;&#1072;&#1090;&#1086;&#1082; &#1085;&#1072; &#1089;&#1082;&#1083;&#1072;&#1076;&#1077;:',
+        '#default_value' => $res['count'],
+        '#required' => TRUE
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => '&#1044;&#1086;&#1073;&#1072;&#1074;&#1080;&#1090;&#1100;',
+        '#attributes' => array(
+            'class' => array('button')
+        )
+    );
+    return $form;
+}
+
+function avtozap_add_part_validate($form, &$form_state)
+{
+    $values = &$form_state['values'];
+    $values['article'] = preg_replace("/\\s/","",$values['article']);
+    $res = db_select('avtozap_parts','a')
+        ->fields('a')
+        ->condition('a.article',$values['article'])
+        ->execute()
+        ->rowCount();
+    if($res > 0)
+    {
+        form_set_error('article','&#1058;&#1072;&#1082;&#1086;&#1081; &#1072;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083; &#1091;&#1078;&#1077; &#1079;&#1072;&#1085;&#1103;&#1090;');
+    }
+    if(!(strlen($values['article']) > 0))
+    {
+        form_set_error('article','&#1053;&#1077;&#1076;&#1086;&#1087;&#1091;&#1089;&#1090;&#1080;&#1084;&#1086;&#1077; &#1079;&#1085;&#1072;&#1095;&#1077;&#1085;&#1080;&#1077; &#1072;&#1088;&#1090;&#1080;&#1082;&#1091;&#1083;&#1072;');
+    }
+    if(!is_numeric($values['price_order']))
+    {
+        form_set_error('price_order','&#1053;&#1077;&#1076;&#1086;&#1087;&#1091;&#1089;&#1090;&#1080;&#1084;&#1086;&#1077; &#1079;&#1085;&#1072;&#1095;&#1077;&#1085;&#1080;&#1077; &#1094;&#1077;&#1085;&#1099;');
+    }
+    if(!is_numeric($values['count']))
+    {
+        form_set_error('count','&#1053;&#1077;&#1076;&#1086;&#1087;&#1091;&#1089;&#1090;&#1080;&#1084;&#1086;&#1077; &#1079;&#1085;&#1072;&#1095;&#1077;&#1085;&#1080;&#1077; &#1082;&#1086;&#1083;&#1080;&#1095;&#1077;&#1089;&#1090;&#1074;&#1072;');
+    }
+}
+
+function avtozap_add_part_submit($form, &$form_state)
+{
+    $values = &$form_state['values'];
+    db_insert('avtozap_parts')
+        ->fields(array(
+            'gid' => $values['gid'],
+            'article' => $values['article'],
+            'manufacturer' => $values['manufacturer'],
+            'name' => $values['name'],
+            'price_order' => $values['price_order'],
+            'popularity' => 0,
+            'count' => $values['count'],
+            'status' => 1
+        ))
+        ->execute();
+    drupal_set_message('&#1047;&#1072;&#1087;&#1095;&#1072;&#1089;&#1090;&#1100; '.$values['article'].' &#1089;&#1086;&#1079;&#1076;&#1072;&#1085;&#1072; &#1091;&#1089;&#1087;&#1077;&#1096;&#1085;&#1086;');
+}
+function avtozap_empty_page()
+{
+    return "";
+}
+function avtozap_upload_price($form,&$form_state)
+{
+    $form['#attributes']['enctype'] = "multipart/form-data";
+    $form['price'] = array(
+        '#type' => 'file',
+        '#title' => '&#1055;&#1088;&#1080;&#1082;&#1088;&#1077;&#1087;&#1080;&#1090;&#1077; &#1092;&#1072;&#1081;&#1083; &#1087;&#1088;&#1072;&#1081;&#1089;&#1072;',
+        '#description' => '&#1042;&#1099;&#1073;&#1080;&#1088;&#1077;&#1090;&#1077; &#1092;&#1072;&#1081;&#1083; &#1089; &#1088;&#1072;&#1089;&#1096;&#1080;&#1088;&#1077;&#1085;&#1080;&#1077;&#1084; .xlsx'
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => '&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100;'
+    );
+    return $form;
+}
+function avtozap_upload_price_validate($form,&$form_state)
+{
+    if(isset($form['price']))
+    {
+        $validators = array('file_validate_extensions' => array('xlsx'));
+        $file = file_save_upload('price',$validators,'public://',FILE_EXISTS_RENAME);
+        if($file) $form_state['values']['price'] = $file;
+    }
+}
+function avtozap_upload_price_submit($form,&$form_state)
+{
+    drupal_session_start();
+    $file = $form_state['values']['price'];
+    $file->status = FILE_STATUS_PERMANENT;
+    file_save($file);
+    $_SESSION['avtozap_upload'] = array();
+    $_SESSION['avtozap_upload']['fid'] = $file->fid;
+    $_SESSION['avtozap_upload']['i'] = 2;
+    drupal_goto('admin/parts/upload/processing/');
+}
+function avtozap_upload_processing()
+{
+    drupal_session_start();
+    drupal_add_js(drupal_get_path('theme','avtozap')."/jquery-2.1.4.min.js");
+    drupal_add_js(drupal_get_path('theme','avtozap')."/javascript.js");
+    if(isset($_SESSION['avtozap_upload']))
+    {
+        return '<h2 class="attention">&#1048;&#1085;&#1080;&#1094;&#1080;&#1072;&#1083;&#1080;&#1079;&#1072;&#1094;&#1080;&#1103; &#1079;&#1072;&#1075;&#1088;&#1091;&#1079;&#1082;&#1080;. &#1053;&#1077; &#1087;&#1086;&#1082;&#1080;&#1076;&#1072;&#1081;&#1090;&#1077; &#1089;&#1090;&#1088;&#1072;&#1085;&#1080;&#1094;&#1091;!</h2><br><div class="log"></div><script type="text/javascript">upload_price();</script>';
+    }
+    else
+    {
+        drupal_goto("admin/parts");
+        return "";
+    }
+}
+function avtozap_upload_cities($form,&$form_state)
+{
+    $form['#attributes']['enctype'] = "multipart/form-data";
+    $form['cities'] = array(
+        '#type' => 'file',
+        '#title' => '&#1055;&#1088;&#1080;&#1082;&#1088;&#1077;&#1087;&#1080;&#1090;&#1077; &#1092;&#1072;&#1081;&#1083; &#1075;&#1086;&#1088;&#1086;&#1076;&#1086;&#1074;',
+        '#description' => '&#1042;&#1099;&#1073;&#1080;&#1088;&#1077;&#1090;&#1077; &#1092;&#1072;&#1081;&#1083; &#1089; &#1088;&#1072;&#1089;&#1096;&#1080;&#1088;&#1077;&#1085;&#1080;&#1077;&#1084; .xlsx'
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => '&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100;'
+    );
+    return $form;
+}
+function avtozap_upload_cities_validate($form,&$form_state)
+{
+    if(isset($form['cities']))
+    {
+        $validators = array('file_validate_extensions' => array('xlsx'));
+        $file = file_save_upload('cities',$validators,'public://',FILE_EXISTS_RENAME);
+        if($file) $form_state['values']['cities'] = $file;
+    }
+}
+function avtozap_upload_cities_submit($form,&$form_state)
+{
+    require drupal_get_path('module','avtozap')."/excel/PHPExcel.php";
+    $file = $form_state['values']['cities'];
+    if($file)
+    {
+        db_delete("avtozap_cities")
+            ->execute();
+        $file->status = FILE_STATUS_PERMANENT;
+        file_save($file);
+        $realfile = drupal_realpath("public://".$file->filename);
+        $inputFileType = PHPExcel_IOFactory::identify($realfile);
+        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+        $objFile = $objReader->load($realfile);
+        $sheet = $objFile->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
+        for($row = 2; $row <= $highestRow; $row++)
+        {
+            $name = $sheet->getCell("A".$row)->getValue();
+            $query = db_select("avtozap_cities","a");
+            $query->fields("a");
+            $query->condition("a.name",$name);
+            $query = $query->execute();
+            if(!$query->rowCount() && !is_null($name) && $name != "")
+            {
+                db_insert("avtozap_cities")
+                    ->fields(array(
+                        'name' => $name
+                    ))
+                    ->execute();
+            }
+        }
+        $sheet->disconnectCells();
+        $objFile->disconnectWorksheets();
+        file_delete($file);
+        drupal_set_message('&#1043;&#1086;&#1088;&#1086;&#1076;&#1072; &#1079;&#1072;&#1075;&#1088;&#1091;&#1078;&#1077;&#1085;&#1099;');
+        drupal_goto('admin/parts');
+    }
+}		
