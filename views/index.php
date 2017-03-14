@@ -26,6 +26,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <?php if(Session::get('UserID')):?>
+                        <li><a href="/manager">Manager</a></li>
                         <li><a href="/logout">Logout</a></li>
                     <?php else: ?>
                         <li><a href="/registration">Registration</a></li>

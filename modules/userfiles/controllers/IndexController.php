@@ -5,9 +5,9 @@ class IndexController extends Controller {
     
     public function indexAction() {
         $repository = new FileRepository();
-        $data = $repository->findAll();
-        //var_dump($data);
-        $this->view->generate('userfiles', 'index.php', 'index.php');
+        $userID = Session::get('UserID');
+        $data = $repository->findByOne($userID);
+        $this->view->generate('userfiles', 'index.php', 'index.php', $data);
     }
     public function uploadAction() {
         if ($_FILES) {

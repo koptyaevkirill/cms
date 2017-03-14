@@ -15,8 +15,8 @@ class IndexController extends Controller {
         $repository = new UserRepository();
         $data = $repository->findByOne($_POST['email']);
         $user->setEmail($data['login']);
-        $user->setPassword($data['password']);
-        $user->setSessionPassword($_POST['password']);
+        $user->setPassword(md5($data['password']));
+        $user->setSessionPassword(md5($_POST['password']));
         if($user->isValid()) {
             Session::set('UserID', $data['id']);
             header('Location: /');
@@ -35,7 +35,7 @@ class IndexController extends Controller {
         $user = new User();
         $repository = new UserRepository();
         $user->setEmail($_POST['email']);
-        $user->setPassword($_POST['password']);
+        $user->setPassword(md5($_POST['password']));
         $repository->save($user->toArray());
         header('Location: /login');
         

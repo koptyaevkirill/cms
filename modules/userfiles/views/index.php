@@ -8,9 +8,11 @@
     <div id="log">Progress bar</div>
 </div>
 <div class="col-md-12">
-    <ul class="files-list">
-        
-    </ul>
+    <ol class="files-list">
+        <?php foreach($data as $val) :?>
+            <li><?=$val['ulr']?> ---- <a href="/static/uploads/<?=$val['id']?>.<?=end(explode(".", $val['ulr']));?>" style="color: #fd680e;">Download</a></li>
+        <?php endforeach; ?>
+    </ol>
 </div>
 <script>
     function log(html) {
@@ -29,6 +31,7 @@
         xhr.onload = function(msg) {
             if (this.status == 200) {
                 log("Success");
+                location.reload();
             } else {
                 log("error " + this.status);
             }

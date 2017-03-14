@@ -6,12 +6,12 @@ class FileRepository extends Repository {
         $query = $this->em->query('SELECT * FROM testFiles');
         return $query->fetchAll();
     }
-    public function findByOne($email) {
-        $query = $this->em->prepare('SELECT * FROM  testFiles WHERE  login = :email');
+    public function findByOne($id) {
+        $query = $this->em->prepare('SELECT * FROM  testFiles WHERE  user_id = :id');
         $query->execute(array(
-            ':email' => $email
+            ':id' => $id
         ));
-        return $query->fetch();
+        return $query->fetchAll();
     }
     public function save($data) {
         $query = $this->em->prepare('INSERT INTO testFiles (ulr, created_at, user_id) VALUES(:name, :createdAt, :userID)');
